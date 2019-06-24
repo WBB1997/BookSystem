@@ -4,12 +4,24 @@ import java.util.Date;
 
 public class Reader {
     private String No;
+    private String Password;
     private String Name;
     private String Gender;
     private String Type;
     private String College;
     private Date TakeEffectDate;
     private Date LoseEffectDate;
+
+    public Reader() {
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
 
     public String getNo() {
         return No;
@@ -71,6 +83,7 @@ public class Reader {
     public String toString() {
         return "Reader{" +
                 "No='" + No + '\'' +
+                ", Password='" + Password + '\'' +
                 ", Name='" + Name + '\'' +
                 ", Gender='" + Gender + '\'' +
                 ", Type='" + Type + '\'' +

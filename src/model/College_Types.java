@@ -5,6 +5,9 @@ import java.util.List;
 public class College_Types {
     private List<String> types;
 
+    public College_Types() {
+    }
+
     public List<String> getTypes() {
         return types;
     }

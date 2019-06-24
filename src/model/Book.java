@@ -3,19 +3,25 @@ package model;
 import java.util.Date;
 
 public class Book {
-    private String No;
+    private String ISBN;
     private String Name;
-    private String Gener;
+    private String Author;
     private String Type;
-    private String College;
-    private Date date;
+    private String Publisher;
+    private String PublishDate;
+    private int Amount = 0;
+    private int Available = 0;
+    private String Cover = "null";
 
-    public String getNo() {
-        return No;
+    public Book() {
     }
 
-    public void setNo(String no) {
-        No = no;
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
     }
 
     public String getName() {
@@ -26,12 +32,12 @@ public class Book {
         Name = name;
     }
 
-    public String getGener() {
-        return Gener;
+    public String getAuthor() {
+        return Author;
     }
 
-    public void setGener(String gener) {
-        Gener = gener;
+    public void setAuthor(String author) {
+        Author = author;
     }
 
     public String getType() {
@@ -42,31 +48,58 @@ public class Book {
         Type = type;
     }
 
-    public String getCollege() {
-        return College;
+    public String getPublisher() {
+        return Publisher;
     }
 
-    public void setCollege(String college) {
-        College = college;
+    public void setPublisher(String publisher) {
+        Publisher = publisher;
     }
 
-    public Date getDate() {
-        return date;
+    public String getPublishDate() {
+        return PublishDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setPublishDate(String publishDate) {
+        PublishDate = publishDate;
+    }
+
+    public int getAmount() {
+        return Amount;
+    }
+
+    public void setAmount(int amount) {
+        Amount = amount;
+    }
+
+    public int getAvailable() {
+        return Available;
+    }
+
+    public void setAvailable(int available) {
+        Available = available;
+    }
+
+    public String getCover() {
+        return Cover;
+    }
+
+    public void setCover(String cover) {
+        Cover = cover;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "No='" + No + '\'' +
+                "ISBN='" + ISBN + '\'' +
                 ", Name='" + Name + '\'' +
-                ", Gener='" + Gener + '\'' +
+                ", Author='" + Author + '\'' +
                 ", Type='" + Type + '\'' +
-                ", College='" + College + '\'' +
-                ", date=" + date +
+                ", Publisher='" + Publisher + '\'' +
+                ", PublishDate='" + PublishDate + '\'' +
+                ", Amount=" + Amount +
+                ", Available=" + Available +
+                ", Cover='" + Cover + '\'' +
                 '}';
     }
 }

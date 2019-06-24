@@ -24,23 +24,23 @@ public class DruidManager {
         dataSource = new DruidDataSource();
         dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
         dataSource.setUsername("wubeibei");
-        dataSource.setPassword("123456");
-        dataSource.setUrl("JDBC:oracle:thin:@localhost:1521/orclpdb");
+        dataSource.setPassword("a690252189");
+        dataSource.setUrl("JDBC:oracle:thin:@localhost:1521/pdborcl");
         dataSource.setInitialSize(5);
         dataSource.setMinIdle(1);
         dataSource.setMaxActive(10);
-        // 启用监控统计功能
-        try {
-            dataSource.setFilters("stat");
-        } catch (SQLException e) {
-            throw new ExceptionInInitializerError(e);
-        }// for mysql
-        dataSource.setPoolPreparedStatements(false);
+//        // 启用监控统计功能
+//        try {
+//            dataSource.setFilters("stat");
+//        } catch (SQLException e) {
+//            throw new ExceptionInInitializerError(e);
+//        }// for mysql
+//        dataSource.setPoolPreparedStatements(false);
     }
 
     //要考虑多线程的情况
     public Connection getConnection() throws Exception {
-        Connection connection = null;
+        Connection connection;
         try {
             synchronized (dataSource) {
                 connection = dataSource.getConnection();

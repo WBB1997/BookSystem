@@ -5,6 +5,9 @@ import java.util.List;
 public class Book_Types {
     private List<String> types;
 
+    public Book_Types() {
+    }
+
     public List<String> getTypes() {
         return types;
     }

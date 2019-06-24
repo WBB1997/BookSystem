@@ -7,6 +7,9 @@ public class Admin {
     private String Gender;
     private String Phone;
 
+    public Admin() {
+    }
+
     public String getNo() {
         return No;
     }
