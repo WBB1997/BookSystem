@@ -18,7 +18,7 @@ public class College_Types {
 
     @Override
     public String toString() {
-        return "College_Types{" +
+        return "{" +
                 "types=" + types +
                 '}';
     }

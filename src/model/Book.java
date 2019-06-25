@@ -1,8 +1,12 @@
 package model;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Book {
+public class Book implements Serializable {
     private String ISBN;
     private String Name;
     private String Author;
@@ -90,16 +94,18 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "ISBN='" + ISBN + '\'' +
-                ", Name='" + Name + '\'' +
-                ", Author='" + Author + '\'' +
-                ", Type='" + Type + '\'' +
-                ", Publisher='" + Publisher + '\'' +
-                ", PublishDate='" + PublishDate + '\'' +
-                ", Amount=" + Amount +
-                ", Available=" + Available +
-                ", Cover='" + Cover + '\'' +
+//        JSONObject jsonObject = (JSONObject) JSON.toJSON(this);
+//        return jsonObject.toJSONString();
+        return "{" +
+                "\"ISBN\":\"" + ISBN + '\"' +
+                ", \"Name\":\"" + Name + '\"' +
+                ", \"Author\":\"" + Author + '\"' +
+                ", \"Type\":\"" + Type + '\"' +
+                ", \"Publisher\":\"" + Publisher + '\"' +
+                ", \"PublishDate\":\"" + PublishDate + '\"' +
+                ", \"Amount\":" + Amount +
+                ", \"Available\":" + Available +
+                ", \"Cover\":\"" + Cover + '\"' +
                 '}';
     }
 }

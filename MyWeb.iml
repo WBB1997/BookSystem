@@ -23,6 +23,7 @@
             <entry key="com.zeroturnaround.jrebel.remoting.DeleteUnindexedFiles" value="false" />
             <entry key="com.zeroturnaround.jrebel.remoting.ModuleRemoteServerSelection" value="off" />
             <entry key="jrebelEnabled" value="true" />
+            <entry key="lastExternalPluginCheckTime" value="1561386477719" />
           </map>
         </option>
         <option name="masterModuleName" />
@@ -44,5 +45,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="libs" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.16" level="application_server_libraries" />
+    <orderEntry type="library" name="taglibs" level="project" />
   </component>
 </module>

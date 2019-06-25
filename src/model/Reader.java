@@ -9,8 +9,8 @@ public class Reader {
     private String Gender;
     private String Type;
     private String College;
-    private Date TakeEffectDate;
-    private Date LoseEffectDate;
+    private String TakeEffectDate;
+    private String LoseEffectDate;
 
     public Reader() {
     }
@@ -63,19 +63,19 @@ public class Reader {
         College = college;
     }
 
-    public Date getTakeEffectDate() {
+    public String getTakeEffectDate() {
         return TakeEffectDate;
     }
 
-    public void setTakeEffectDate(Date takeEffectDate) {
+    public void setTakeEffectDate(String takeEffectDate) {
         TakeEffectDate = takeEffectDate;
     }
 
-    public Date getLoseEffectDate() {
+    public String getLoseEffectDate() {
         return LoseEffectDate;
     }
 
-    public void setLoseEffectDate(Date loseEffectDate) {
+    public void setLoseEffectDate(String loseEffectDate) {
         LoseEffectDate = loseEffectDate;
     }
 

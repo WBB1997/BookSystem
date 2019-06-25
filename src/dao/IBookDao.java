@@ -27,8 +27,11 @@ public interface IBookDao {
     boolean isReaderBorrowBook(Book b, Reader r) throws Exception;
 
     // 任意词查询(模糊查询)
-    List<Book> queryAllBook(String word) throws Exception;
+    List<Book> queryAllBook(String word, int pageNow, int pageSize) throws Exception;
 
     // 任意字段查询(模糊查询)
-    List<Book> queryBookOfKeyword(String parameter, String word) throws Exception;
+    List<Book> queryBookOfKeyword(String parameter, String word, int pageNow, int pageSize) throws Exception;
+
+    // 查询图书的总数
+    int countBook() throws Exception;
 }

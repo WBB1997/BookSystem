@@ -7,6 +7,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="MyWeb" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="libs" />
+          <element id="library" level="project" name="taglibs" />
+        </element>
       </element>
     </root>
   </artifact>

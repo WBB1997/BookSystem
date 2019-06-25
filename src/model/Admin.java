@@ -52,7 +52,7 @@ public class Admin {
 
     @Override
     public String toString() {
-        return "Admin{" +
+        return "{" +
                 "No='" + No + '\'' +
                 ", Password='" + Password + '\'' +
                 ", Name='" + Name + '\'' +

@@ -18,7 +18,7 @@ public class Reader_Types {
 
     @Override
     public String toString() {
-        return "Reader_Types{" +
+        return "{" +
                 "types=" + types +
                 '}';
     }

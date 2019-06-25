@@ -1,9 +1,12 @@
 package util;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DruidManager {
     private DruidManager() {
@@ -25,10 +28,15 @@ public class DruidManager {
         dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
         dataSource.setUsername("wubeibei");
         dataSource.setPassword("a690252189");
-        dataSource.setUrl("JDBC:oracle:thin:@localhost:1521/pdborcl");
+        dataSource.setUrl("JDBC:oracle:thin:@localhost:1521/orclpdb");
         dataSource.setInitialSize(5);
         dataSource.setMinIdle(1);
         dataSource.setMaxActive(10);
+        dataSource.setTimeBetweenEvictionRunsMillis(20000);
+        dataSource.setRemoveAbandoned(true);
+        dataSource.setRemoveAbandonedTimeout(30);
+        dataSource.setTestWhileIdle(true);
+        dataSource.setTestOnBorrow(true);
 //        // 启用监控统计功能
 //        try {
 //            dataSource.setFilters("stat");
@@ -42,12 +50,20 @@ public class DruidManager {
     public Connection getConnection() throws Exception {
         Connection connection;
         try {
-            synchronized (dataSource) {
-                connection = dataSource.getConnection();
-            }
+            connection = dataSource.getConnection();
         } catch (SQLException e) {
             throw new Exception(e);
         }
         return connection;
     }
+
+
+//    public static Connection getConnection() throws SQLException {
+//        String jdbcUrl = "jdbc:oracle:thin:@localhost:1521/xe";
+//        String userid = "system";
+//        String password = "123456";
+//        OracleDataSource ds = new OracleDataSource();
+//        ds.setURL(jdbcUrl);
+//        return ds.getConnection(userid, password);
+//    }
 }
