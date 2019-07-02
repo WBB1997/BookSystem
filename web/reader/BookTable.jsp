@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: FJ
-  Date: 2019/6/24
-  Time: 15:57
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="model.Reader" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -22,9 +16,8 @@
         white-space: normal;
     }
 </style>
-<body style="margin-top: 10px">
-<form class="layui-form" action="">
-
+<body style="margin-top: 10px" scroll="no">
+<form class="layui-form">
     <div class="layui-inline">
         <label class="layui-form-label">类别</label>
         <div class="layui-inline">
@@ -32,7 +25,7 @@
                 <option value="All">任意词</option>
                 <option value="ISBN">ISBN</option>
                 <option value="Name">书名</option>
-                <option value="Author">作者</option>
+                <option value="Author">读者</option>
                 <option value="Type">类型</option>
                 <option value="Publisher">出版社</option>
             </select>
@@ -50,14 +43,12 @@
     </div>
 </form>
 
-<%--表格--%>
-<table class="layui-hide" id="bookTable" lay-filter="book"></table>
+<table class="layui-hide" id="bookTable" lay-filter="bookTable"></table>
 
-<%--工具栏--%>
 <script type="text/html" id="bookBar">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="incr">增加</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="decr">减少</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    {{#  if(d.Available > 0){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="brow">借书</a>
+    {{#  } }}
 </script>
 
 <script type="text/html" id="imgTpl">
@@ -103,56 +94,35 @@
                 , {fixed: 'right', align: 'center', toolbar: '#bookBar'}
             ]]
         });
-
         //监听行工具事件
-        table.on('tool(book)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+        table.on('tool(bookTable)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
-            json = JSON.stringify(data);
-            if (layEvent === 'incr') {
-                layer.open({
-                    title: '数量修改',
-                    type: 2,
-                    skin: 'layui-layer-lan',
-                    closeBtn: 2,
-                    area: ["500px", "350px"], // 宽高
-                    content: '<%request.getContextPath();%>/book/increaseBook.jsp',
-                    end: function () {
-                        flushTab();
-                    },
-                    success: function (layero, index) {
-                        layer.msg(layero, index);
-                    }
-                });
-            } else if (layEvent === 'decr') {
-                layer.open({
-                    title: '数量修改',
-                    type: 2,
-                    skin: 'layui-layer-lan',
-                    closeBtn: 2,
-                    area: ["500px", "350px"], // 宽高
-                    content: '<%request.getContextPath();%>/book/decreaseBook.jsp',
-                    end: function () {
-                        flushTab();
-                    },
-                    success: function (layero, index) {
-                        layer.msg(layero, index);
-                    }
-                });
-            } else if (layEvent === 'edit') {
-                layer.open({
-                    title: '图书信息',
-                    type: 2,
-                    skin: 'layui-layer-lan',
-                    closeBtn: 2,
-                    area: ["1380px", "800px"], // 宽高
-                    content: '<%request.getContextPath();%>/book/bookinfo.jsp',
-                    end: function () {
-                        flushTab();
-                    },
-                    success: function (layero, index) {
-                        layer.msg(layero, index);
-                    }
+            if (layEvent === 'brow') {
+                layer.confirm('确定借书？', function (index) {
+                    //向服务端发送删除指令
+                    $.ajax({
+                        type: 'get',
+                        url: '<%=request.getContextPath()%>/ReaderServlet?action=borrowBook',
+                        data: {
+                            isbn: data.ISBN//传向后端的数据
+                            , account: "<%=((Reader)session.getAttribute("Reader")).getNo()%>"//传向后端的数据
+                            , password: "<%=((Reader)session.getAttribute("Reader")).getPassword()%>"//传向后端的数据
+                        },
+                        contentType: 'application/json',
+                        success: function (result) {
+                            if (result.status === "ok") {
+                                layer.msg(result.content, {icon: 6});
+                            } else {
+                                layer.msg(result.content, {icon: 5});
+                            }
+                            flushTab();
+                        },
+                        error: function (result) {
+                            layer.msg('网络错误', {icon: 2}, {time: 2000});
+                            flushTab();
+                        }
+                    });
                 });
             }
         });
@@ -170,33 +140,15 @@
             });
         });
 
-        // 单击添加
-        $("#addId").click(function () {
-            layer.open({
-                title: '添加书籍',
-                type: 2,
-                skin: 'layui-layer-lan',
-                closeBtn: 2,
-                // skin: 'layui-layer-rim', // 加上边框
-                area: ["1380px", "720px"], // 宽高
-                content: '/book/addBook.jsp',
-                end: function () {
-                    flushTab();
-                }
-            });
-
-        });
-
         // 刷新表格
         function flushTab() {
+            // $(".layui-laypage-btn")[0].click();
             table.reload('bookTable', {
                 url: '<%=request.getContextPath()%>/BookServlet?action=getAllBooks'
             });
         }
 
     });
-
-
 </script>
 </body>
 </html>

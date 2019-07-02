@@ -1,10 +1,12 @@
 package dao;
 
+import javafx.util.Pair;
 import model.Admin;
 import model.Book;
 import model.Reader;
 import util.SqlStateListener;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IBookDao {
@@ -27,11 +29,11 @@ public interface IBookDao {
     boolean isReaderBorrowBook(Book b, Reader r) throws Exception;
 
     // 任意词查询(模糊查询)
-    List<Book> queryAllBook(String word, int pageNow, int pageSize) throws Exception;
+    Pair<List<Book>, Integer> queryAllBook(String word, int pageNow, int pageSize) throws Exception;
 
     // 任意字段查询(模糊查询)
-    List<Book> queryBookOfKeyword(String parameter, String word, int pageNow, int pageSize) throws Exception;
+    Pair<List<Book>, Integer> queryBookOfKeyword(String parameter, String word, int pageNow, int pageSize) throws Exception;
 
-    // 查询图书的总数
-    int countBook() throws Exception;
+    // 获取书籍类型
+    List<String> getBookTypes() throws SQLException;
 }

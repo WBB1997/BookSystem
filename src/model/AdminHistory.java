@@ -1,12 +1,30 @@
 package model;
 
 public class AdminHistory {
+    private String Name;
+    private String Cover;
     private String No;
     private String ISBN;
     private String PurchaseDate;
     private int PurchaseAmount;
 
     public AdminHistory() {
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getCover() {
+        return Cover;
+    }
+
+    public void setCover(String cover) {
+        Cover = cover;
     }
 
     public String getNo() {
@@ -44,7 +62,9 @@ public class AdminHistory {
     @Override
     public String toString() {
         return "{" +
-                "\"No\":\"" + No + '\"' +
+                "\"Cover\":\"" + Cover + '\"' +
+                ", \"Name\":\"" + Name + '\"' +
+                ", \"No\":\"" + No + '\"' +
                 ", \"ISBN\":\"" + ISBN + '\"' +
                 ", \"PurchaseDate\":\"" + PurchaseDate + '\"' +
                 ", \"PurchaseAmount\":" + PurchaseAmount +

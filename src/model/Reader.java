@@ -15,6 +15,11 @@ public class Reader {
     public Reader() {
     }
 
+    public Reader(String no, String password) {
+        No = no;
+        Password = password;
+    }
+
     public String getPassword() {
         return Password;
     }
@@ -81,15 +86,15 @@ public class Reader {
 
     @Override
     public String toString() {
-        return "Reader{" +
-                "No='" + No + '\'' +
-                ", Password='" + Password + '\'' +
-                ", Name='" + Name + '\'' +
-                ", Gender='" + Gender + '\'' +
-                ", Type='" + Type + '\'' +
-                ", College='" + College + '\'' +
-                ", TakeEffectDate=" + TakeEffectDate +
-                ", LoseEffectDate=" + LoseEffectDate +
+        return "{" +
+                "\"No\":\"" + No + '\"' +
+                ", \"Password\":\"" + Password + '\"' +
+                ", \"Name\":\"" + Name + '\"' +
+                ", \"Gender\":\"" + Gender + '\"' +
+                ", \"Type\":\"" + Type + '\"' +
+                ", \"College\":\"" + College + '\"' +
+                ", \"TakeEffectDate\":\"" + TakeEffectDate + '\"' +
+                ", \"LoseEffectDate\":\"" + LoseEffectDate + '\"' +
                 '}';
     }
 }

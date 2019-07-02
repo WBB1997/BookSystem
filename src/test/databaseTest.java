@@ -2,6 +2,7 @@ package test;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import javafx.util.Pair;
 import model.Admin;
 import model.AdminHistory;
 import model.Book;
@@ -11,6 +12,7 @@ import util.DaoFactory;
 import util.MyUitl;
 import util.SqlStateListener;
 
+import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -273,9 +275,7 @@ public class databaseTest {
             Admin a = new Admin();
             a.setNo("690252189");
             a.setPassword("a690252189");
-            List<AdminHistory> arrayList =  DaoFactory.getAdminDao().queryHistory(a,1,10);
-            RequestModel<AdminHistory> bookModel = RequestModel.buildSuccess(arrayList.size(),arrayList);
-            System.out.println(bookModel.toString());
+            System.out.println();
         } catch (Exception e) {
             System.out.println(MyUitl.DealWithErrMesage(e.getMessage()));
         }

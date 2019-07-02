@@ -16,7 +16,7 @@
                 <a href="BookTable.jsp" target="table">书籍资料</a>
             </li>
             <li class="layui-nav-item">
-                <a href="history.jsp" target="table">操作记录</a>
+                <a href="history.jsp" target="table">借书记录</a>
             </li>
         </ul>
     </div>

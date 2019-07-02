@@ -9,11 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
-/**
- * @Author: fangju
- * @Date: 2019/6/24
- */
-@WebServlet("/BaseServlet")
 public class BaseServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");

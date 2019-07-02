@@ -10,6 +10,11 @@ public class Admin {
     public Admin() {
     }
 
+    public Admin(String no, String password) {
+        No = no;
+        Password = password;
+    }
+
     public String getNo() {
         return No;
     }
