@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Date;
-
 public class Reader {
     private String No;
     private String Password;
@@ -9,10 +7,19 @@ public class Reader {
     private String Gender;
     private String Type;
     private String College;
+    private int Fine;
     private String TakeEffectDate;
     private String LoseEffectDate;
 
     public Reader() {
+    }
+
+    public int getFine() {
+        return Fine;
+    }
+
+    public void setFine(int fine) {
+        Fine = fine;
     }
 
     public Reader(String no, String password) {
@@ -89,6 +96,7 @@ public class Reader {
         return "{" +
                 "\"No\":\"" + No + '\"' +
                 ", \"Password\":\"" + Password + '\"' +
+                ", \"Password\":" + Fine +
                 ", \"Name\":\"" + Name + '\"' +
                 ", \"Gender\":\"" + Gender + '\"' +
                 ", \"Type\":\"" + Type + '\"' +

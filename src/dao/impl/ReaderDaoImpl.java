@@ -5,7 +5,6 @@ import javafx.util.Pair;
 import model.*;
 import oracle.jdbc.OracleTypes;
 import util.DatabaseBean;
-import util.DruidManager;
 import util.MyUitl;
 import util.SqlStateListener;
 
@@ -156,7 +155,7 @@ public class ReaderDaoImpl implements IReaderDao {
     }
 
     @Override
-    public Pair<List<ReaderHistory>, Integer> queryHistory(Reader r, int pageNow, int pageSize) throws Exception {
+    public Pair<List<Reader_Borrow_Return_History>, Integer> queryHistory(Reader r, int pageNow, int pageSize) throws Exception {
         int count;
         Connection connection = DatabaseBean.getConnection();
         CallableStatement callableStatement = connection.prepareCall("{ ?=call query_reader_history(?, ?, ?, ?, ?)}");
@@ -168,14 +167,14 @@ public class ReaderDaoImpl implements IReaderDao {
         callableStatement.setInt(5, pageSize);
         callableStatement.execute();
         ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
-        ArrayList<ReaderHistory> arrayList = getHistory(resultSet);
+        ArrayList<Reader_Borrow_Return_History> arrayList = getHistory(resultSet);
         count =  callableStatement.getInt(6);
         DatabaseBean.close(resultSet, callableStatement, connection);
         return new Pair<>(arrayList, count);
     }
 
     @Override
-    public Pair<List<ReaderHistory>, Integer> queryHistoryInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception {
+    public Pair<List<Reader_Borrow_Return_History>, Integer> queryHistoryInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception {
         int count;
         Connection connection = DatabaseBean.getConnection();
         CallableStatement callableStatement = connection.prepareCall("{ ?=call query_reader_history_in_isbn(?, ?, ?, ?, ?, ?)}");
@@ -188,7 +187,7 @@ public class ReaderDaoImpl implements IReaderDao {
         callableStatement.setInt(6, pageSize);
         callableStatement.execute();
         ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
-        ArrayList<ReaderHistory> arrayList = getHistory(resultSet);
+        ArrayList<Reader_Borrow_Return_History> arrayList = getHistory(resultSet);
         count =  callableStatement.getInt(7);
         DatabaseBean.close(resultSet, callableStatement, connection);
         return new Pair<>(arrayList, count);
@@ -225,23 +224,23 @@ public class ReaderDaoImpl implements IReaderDao {
     }
 
 
-    private ArrayList<ReaderHistory> getHistory(ResultSet resultSet) throws SQLException {
-        ArrayList<ReaderHistory> arrayList = new ArrayList<>();
+    private ArrayList<Reader_Borrow_Return_History> getHistory(ResultSet resultSet) throws SQLException {
+        ArrayList<Reader_Borrow_Return_History> arrayList = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         while (resultSet.next()) {
-            ReaderHistory readerHistory = new ReaderHistory();
-            readerHistory.setNo(resultSet.getString("No"));
-            readerHistory.setISBN(resultSet.getString("ISBN"));
-            readerHistory.setBorrowDate(sdf.format(resultSet.getDate("BorrowDate")));
-            readerHistory.setShouldReturnDate(sdf.format(resultSet.getDate("ShouldReturnDate")));
-            readerHistory.setCover(resultSet.getString("Cover"));
-            readerHistory.setName(resultSet.getString("Name"));
+            Reader_Borrow_Return_History readerBorrowReturnHistory = new Reader_Borrow_Return_History();
+            readerBorrowReturnHistory.setNo(resultSet.getString("No"));
+            readerBorrowReturnHistory.setISBN(resultSet.getString("ISBN"));
+            readerBorrowReturnHistory.setBorrowDate(sdf.format(resultSet.getDate("BorrowDate")));
+            readerBorrowReturnHistory.setShouldReturnDate(sdf.format(resultSet.getDate("ShouldReturnDate")));
+            readerBorrowReturnHistory.setCover(resultSet.getString("Cover"));
+            readerBorrowReturnHistory.setName(resultSet.getString("Name"));
             Date date = resultSet.getDate("ReturnDate");
             if (date == null)
-                readerHistory.setReturnDate("-");
+                readerBorrowReturnHistory.setReturnDate("-");
             else
-                readerHistory.setReturnDate(sdf.format(resultSet.getDate(5)));
-            arrayList.add(readerHistory);
+                readerBorrowReturnHistory.setReturnDate(sdf.format(resultSet.getDate(5)));
+            arrayList.add(readerBorrowReturnHistory);
         }
         return arrayList;
     }

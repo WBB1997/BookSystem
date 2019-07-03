@@ -1,6 +1,5 @@
 package dao.impl;
 
-import com.sun.org.apache.regexp.internal.REUtil;
 import dao.IBookDao;
 import javafx.util.Pair;
 import model.Admin;
@@ -8,7 +7,6 @@ import model.Book;
 import model.Reader;
 import oracle.jdbc.OracleTypes;
 import util.DatabaseBean;
-import util.DruidManager;
 import util.MyUitl;
 import util.SqlStateListener;
 

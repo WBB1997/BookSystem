@@ -10,7 +10,7 @@ import oracle.jdbc.pool.OracleDataSource;
 public class DatabaseBean {
 
     public static Connection getConnection() throws SQLException {
-        String jdbcUrl = "JDBC:oracle:thin:@localhost:1521/orclpdb";
+        String jdbcUrl = "JDBC:oracle:thin:@localhost:1521/pdborcl";
         String userid = "wubeibei";
         String password = "a690252189";
         OracleDataSource ds = new OracleDataSource();

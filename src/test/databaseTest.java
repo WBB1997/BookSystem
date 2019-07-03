@@ -1,20 +1,7 @@
 package test;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import javafx.util.Pair;
 import model.Admin;
-import model.AdminHistory;
-import model.Book;
-import model.Reader;
-import service.RequestModel;
-import util.DaoFactory;
 import util.MyUitl;
-import util.SqlStateListener;
-
-import javax.sound.midi.Soundbank;
-import java.util.ArrayList;
-import java.util.List;
 
 public class databaseTest {
     public static void main(String[] args) {

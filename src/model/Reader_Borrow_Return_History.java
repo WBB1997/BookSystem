@@ -1,44 +1,27 @@
 package model;
 
-public class ReaderHistory {
-    private String No;
-    private String Name;
-    private String Cover;
-    private String ISBN;
+public class Reader_Borrow_Return_History {
+    private Reader reader;
+    private Book book;
     private String BorrowDate;
     private String ShouldReturnDate;
     private String ReturnDate;
+    private String status;
 
-    public String getName() {
-        return Name;
+    public Reader getReader() {
+        return reader;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setReader(Reader reader) {
+        this.reader = reader;
     }
 
-    public String getCover() {
-        return Cover;
+    public Book getBook() {
+        return book;
     }
 
-    public void setCover(String cover) {
-        Cover = cover;
-    }
-
-    public String getNo() {
-        return No;
-    }
-
-    public void setNo(String no) {
-        No = no;
-    }
-
-    public String getISBN() {
-        return ISBN;
-    }
-
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public String getBorrowDate() {
@@ -65,16 +48,25 @@ public class ReaderHistory {
         ReturnDate = returnDate;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "{" +
-                "\"No\":\"" + No + '\"' +
-                ", \"Cover\":\"" + Cover + '\"' +
-                ", \"Name\":\"" + Name + '\"' +
-                ", \"ISBN\":\"" + ISBN + '\"' +
+                "\"No\":\"" + reader.getNo() + '\"' +
+                ", \"Cover\":\"" + book.getCover() + '\"' +
+                ", \"Name\":\"" + book.getName() + '\"' +
+                ", \"ISBN\":\"" + book.getISBN() + '\"' +
                 ", \"BorrowDate\":\"" + BorrowDate + '\"' +
                 ", \"ShouldReturnDate\":\"" + ShouldReturnDate + '\"' +
                 ", \"ReturnDate\":\"" + ReturnDate + '\"' +
+                ", \"Status\":\"" + status + '\"' +
                 '}';
     }
 }

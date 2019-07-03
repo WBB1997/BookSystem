@@ -3,7 +3,7 @@ package dao.impl;
 import dao.IAdminDao;
 import javafx.util.Pair;
 import model.Admin;
-import model.AdminHistory;
+import model.Staff_DealWith_Book_History;
 import model.Reader;
 import oracle.jdbc.OracleTypes;
 import util.DatabaseBean;
@@ -102,21 +102,21 @@ public class AdminDaoImpl implements IAdminDao {
     }
 
     @Override
-    public Pair<List<AdminHistory>, Integer> queryHistory(Admin a, int pageNow, int pageSize) throws Exception {
+    public Pair<List<Staff_DealWith_Book_History>, Integer> queryHistory(Admin a, int pageNow, int pageSize) throws Exception {
         int count;
         Connection connection = DatabaseBean.getConnection();
         CallableStatement callableStatement = connection.prepareCall("{ ?=call query_admin_history(?, ?, ?, ?, ?)}");
         fillPara_6(callableStatement,a,pageNow,pageSize);
         callableStatement.execute();
         ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
-        ArrayList<AdminHistory> arrayList = getHistory(resultSet);
+        ArrayList<Staff_DealWith_Book_History> arrayList = getHistory(resultSet);
         count =  callableStatement.getInt(6);
         DatabaseBean.close(resultSet, callableStatement, connection);
         return new Pair<>(arrayList, count);
     }
 
     @Override
-    public Pair<List<AdminHistory>, Integer> queryHistoryInWord(Admin a, String ISBN, int pageNow, int pageSize) throws Exception {
+    public Pair<List<Staff_DealWith_Book_History>, Integer> queryHistoryInWord(Admin a, String ISBN, int pageNow, int pageSize) throws Exception {
         int count;
         Connection connection = DatabaseBean.getConnection();
         CallableStatement callableStatement = connection.prepareCall("{ ?=call query_admin_history_in_isbn(?, ?, ?, ?, ?, ?)}");
@@ -129,7 +129,7 @@ public class AdminDaoImpl implements IAdminDao {
         callableStatement.setInt(6, pageSize);
         callableStatement.execute();
         ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
-        ArrayList<AdminHistory> arrayList = getHistory(resultSet);
+        ArrayList<Staff_DealWith_Book_History> arrayList = getHistory(resultSet);
         count =  callableStatement.getInt(7);
         DatabaseBean.close(resultSet, callableStatement, connection);
         return new Pair<>(arrayList, count);
@@ -165,11 +165,11 @@ public class AdminDaoImpl implements IAdminDao {
         return adminDetails;
     }
 
-    private ArrayList<AdminHistory> getHistory(ResultSet resultSet) throws SQLException {
-        ArrayList<AdminHistory> arrayList = new ArrayList<>();
+    private ArrayList<Staff_DealWith_Book_History> getHistory(ResultSet resultSet) throws SQLException {
+        ArrayList<Staff_DealWith_Book_History> arrayList = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         while (resultSet.next()) {
-            AdminHistory adminHistory = new AdminHistory();
+            Staff_DealWith_Book_History adminHistory = new Staff_DealWith_Book_History();
             adminHistory.setNo(resultSet.getString("NO"));
             adminHistory.setISBN(resultSet.getString("ISBN"));
             adminHistory.setPurchaseDate(sdf.format(resultSet.getDate("PurchaseDate")));

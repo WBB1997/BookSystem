@@ -3,7 +3,7 @@ package dao;
 import javafx.util.Pair;
 import model.Book;
 import model.Reader;
-import model.ReaderHistory;
+import model.Reader_Borrow_Return_History;
 import util.SqlStateListener;
 
 import java.sql.SQLException;
@@ -35,10 +35,10 @@ public interface IReaderDao {
     Reader getReaderDetails(Reader r) throws SQLException;
 
     // 获得历史记录
-    Pair<List<ReaderHistory>, Integer> queryHistory(Reader r, int pageNow, int pageSize) throws Exception;
+    Pair<List<Reader_Borrow_Return_History>, Integer> queryHistory(Reader r, int pageNow, int pageSize) throws Exception;
 
     // 获得有关键词历史记录
-    Pair<List<ReaderHistory>, Integer> queryHistoryInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception;
+    Pair<List<Reader_Borrow_Return_History>, Integer> queryHistoryInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception;
 
     // 查询读者类型
     List<String> getReaderTypes() throws SQLException;

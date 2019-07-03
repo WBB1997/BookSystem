@@ -2,8 +2,7 @@ package dao;
 
 import javafx.util.Pair;
 import model.Admin;
-import model.AdminHistory;
-import model.Book;
+import model.Staff_DealWith_Book_History;
 import model.Reader;
 import util.SqlStateListener;
 
@@ -27,10 +26,10 @@ public interface IAdminDao {
     boolean checkAdmin(Admin a) throws Exception;
 
     // 获得历史记录
-    Pair<List<AdminHistory>, Integer> queryHistory(Admin a, int pageNow, int pageSize) throws Exception;
+    Pair<List<Staff_DealWith_Book_History>, Integer> queryHistory(Admin a, int pageNow, int pageSize) throws Exception;
 
     // 获得有关键词历史记录
-    Pair<List<AdminHistory>, Integer> queryHistoryInWord(Admin a, String ISBN, int pageNow, int pageSize) throws Exception;
+    Pair<List<Staff_DealWith_Book_History>, Integer> queryHistoryInWord(Admin a, String ISBN, int pageNow, int pageSize) throws Exception;
 
     // 获得读者列表(没有密码)
     Pair<List<Reader>, Integer> getReaderList(Admin a, int pageNow, int pageSize) throws SQLException;

@@ -1,6 +1,5 @@
 package servlet;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import javafx.util.Pair;
@@ -76,7 +75,7 @@ public class ReaderServlet extends BaseServlet{
         int pageNow = Integer.parseInt(req.getParameter("page"));
         int pageSize = Integer.parseInt(req.getParameter("limit"));
         String keyword = req.getParameter("keyword");
-        Pair<List<ReaderHistory>, Integer> list;
+        Pair<List<Reader_Borrow_Return_History>, Integer> list;
         try {
             if (keyword == null)
                 list = DaoFactory.getReaderDao().queryHistory(r, pageNow, pageSize);

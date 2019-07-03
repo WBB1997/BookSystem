@@ -3,7 +3,7 @@ package servlet;
 import com.alibaba.fastjson.JSONObject;
 import javafx.util.Pair;
 import model.Admin;
-import model.AdminHistory;
+import model.Staff_DealWith_Book_History;
 import model.Reader;
 import service.RequestModel;
 import util.DaoFactory;
@@ -59,7 +59,7 @@ public class AdminServlet extends BaseServlet {
         int pageSize = Integer.parseInt(req.getParameter("limit"));
         String keyword = req.getParameter("keyword");
         System.out.println("keyword  " + keyword);
-        Pair<List<AdminHistory>, Integer> list;
+        Pair<List<Staff_DealWith_Book_History>, Integer> list;
         try {
             if (keyword == null)
                 list = DaoFactory.getAdminDao().queryHistory(a, pageNow, pageSize);
