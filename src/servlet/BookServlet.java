@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @WebServlet(name = "BookServlet", urlPatterns = {"/BookServlet"})
-    public class BookServlet extends BaseServlet {
+public class BookServlet extends BaseServlet {
 
     //获取所有图书
     public String getAllBooks(HttpServletRequest req, HttpServletResponse resp) {

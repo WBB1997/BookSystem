@@ -61,21 +61,6 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">账号类型</label>
-        <div class="layui-input-inline">
-            <select name="type" lay-filter="type" id="type">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="layui-input-inline">
-            <select name="college" id="college">
-                <option value=""></option>
-            </select>
-        </div>
-    </div>
-
-
-    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">生效日期</label>
             <div class="layui-input-block">
@@ -164,48 +149,6 @@
             return false;
         });
 
-        // 获取select 值
-        $(function () {
-            $.ajax({
-                url: "<%=request.getContextPath()%>/ReaderServlet?action=getCollegeTypes",//请求地址
-                type: "POST",//请求方式
-                dataType: "json",//返回数据类型
-                contentType: "application/json",
-                async: false,//同步
-                success: function (result) {
-                    var data = result;
-                    var proHtml = '';
-                    for (var o in data) {
-                        proHtml += '<option value="' + data[o] + '">' + data[o] + '</option>';
-                    }
-                    $("#college").html(proHtml);
-                },
-                error: function () {
-                    alert("fail");
-                }
-            });
-
-            $.ajax({
-                url: "<%=request.getContextPath()%>/ReaderServlet?action=getReaderTypes",//请求地址
-                type: "POST",//请求方式
-                dataType: "json",//返回数据类型
-                contentType: "application/json",
-                async: false,//同步
-                success: function (result) {
-                    var data = result;
-                    var proHtml = '';
-                    for (var o in data) {
-                        proHtml += '<option value="' + data[o] + '">' + data[o] + '</option>';
-                    }
-                    $("#type").html(proHtml);
-                },
-                error: function () {
-                    alert("fail");
-                }
-            });
-            form.render();
-        });
-
         // 初始值
         <%
             SimpleDateFormat sdf_input = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");//输入格式
@@ -219,13 +162,9 @@
             ,
             "sex": "<%=((Reader)session.getAttribute("Reader")).getGender()%>"
             ,
-            "college": "<%=((Reader)session.getAttribute("Reader")).getCollege()%>"
-            ,
             "date1": "<%=sdf_target.format(sdf_input.parse(((Reader)session.getAttribute("Reader")).getTakeEffectDate()))%>"
             ,
             "date2": "<%=sdf_target.format(sdf_input.parse(((Reader)session.getAttribute("Reader")).getLoseEffectDate()))%>"
-            ,
-            "type": "<%=((Reader)session.getAttribute("Reader")).getType()%>"
         });
     });
 </script>

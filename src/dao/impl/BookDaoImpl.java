@@ -5,6 +5,7 @@ import javafx.util.Pair;
 import model.Admin;
 import model.Book;
 import model.Reader;
+import model.Staff;
 import oracle.jdbc.OracleTypes;
 import util.DatabaseBean;
 import util.MyUitl;
@@ -198,28 +199,28 @@ public class BookDaoImpl implements IBookDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         while (resultSet.next()) {
             Book b = new Book();
-            b.setISBN(resultSet.getString(1));
-            b.setName(resultSet.getString(2));
-            b.setAuthor(resultSet.getString(3));
-            b.setType(resultSet.getString(4));
-            b.setPublisher(resultSet.getString(5));
-            b.setPublishDate(sdf.format(resultSet.getDate(6)));
-            b.setAmount(resultSet.getInt(7));
-            b.setAvailable(resultSet.getInt(8));
-            b.setCover(resultSet.getString(9));
+            b.setISBN(resultSet.getString("ISBN"));
+            b.setName(resultSet.getString("Name"));
+            b.setAuthor(resultSet.getString("Author"));
+            b.setType(resultSet.getString("Type"));
+            b.setPublisher(resultSet.getString("Publisher"));
+            b.setPublishDate(sdf.format(resultSet.getDate("PublishDate")));
+            b.setAmount(resultSet.getInt("Amount"));
+            b.setAvailable(resultSet.getInt("Available"));
+            b.setCover(resultSet.getString("Cover"));
             bookArrayList.add(b);
         }
         return bookArrayList;
     }
 
-    public void PrivateAaddBook(Admin a, Book b, SqlStateListener l) {
+    public void PrivateAaddBook(Staff s, Book b, SqlStateListener l) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
             connection = DatabaseBean.getConnection();
-            callableStatement = connection.prepareCall("{call add_Book(?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)}");
-            callableStatement.setString(1, a.getNo());
-            callableStatement.setString(2, a.getPassword());
+            callableStatement = connection.prepareCall("{call add_Book(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)}");
+            callableStatement.setString(1, s.getNo());
+            callableStatement.setString(2, s.getPassword());
             callableStatement.setString(3, b.getISBN());
             callableStatement.setString(4, b.getName());
             callableStatement.setString(5, b.getAuthor());
@@ -229,9 +230,10 @@ public class BookDaoImpl implements IBookDao {
             java.util.Date date1 = sDateFormat.parse(b.getPublishDate());
             Date date = new Date(date1.getTime());
             callableStatement.setDate(8, date);
-            callableStatement.setInt(9, b.getAmount());
-            callableStatement.setInt(10, b.getAvailable());
-            callableStatement.setString(11, b.getCover());
+            callableStatement.setDouble(9, b.getValue());
+            callableStatement.setInt(10, b.getAmount());
+            callableStatement.setInt(11, b.getAvailable());
+            callableStatement.setString(12, b.getCover());
             callableStatement.execute();
             l.Correct();
         } catch (SQLException e) {

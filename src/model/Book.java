@@ -9,6 +9,7 @@ public class Book implements Serializable {
     private String Type;
     private String Publisher;
     private String PublishDate;
+    private double Value;
     private int Amount = 0;
     private int Available = 0;
     private String Cover = "null";
@@ -16,6 +17,13 @@ public class Book implements Serializable {
     public Book() {
     }
 
+    public double getValue() {
+        return Value;
+    }
+
+    public void setValue(double value) {
+        Value = value;
+    }
 
     public String getISBN() {
         return ISBN;
@@ -98,6 +106,7 @@ public class Book implements Serializable {
                 ", \"Type\":\"" + Type + '\"' +
                 ", \"Publisher\":\"" + Publisher + '\"' +
                 ", \"PublishDate\":\"" + PublishDate + '\"' +
+                ", \"Value\":" + Value +
                 ", \"Amount\":" + Amount +
                 ", \"Available\":" + Available +
                 ", \"Cover\":\"" + Cover + '\"' +

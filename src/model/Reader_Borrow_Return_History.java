@@ -6,7 +6,6 @@ public class Reader_Borrow_Return_History {
     private String BorrowDate;
     private String ShouldReturnDate;
     private String ReturnDate;
-    private String status;
 
     public Reader getReader() {
         return reader;
@@ -48,14 +47,6 @@ public class Reader_Borrow_Return_History {
         ReturnDate = returnDate;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
         return "{" +
@@ -66,7 +57,6 @@ public class Reader_Borrow_Return_History {
                 ", \"BorrowDate\":\"" + BorrowDate + '\"' +
                 ", \"ShouldReturnDate\":\"" + ShouldReturnDate + '\"' +
                 ", \"ReturnDate\":\"" + ReturnDate + '\"' +
-                ", \"Status\":\"" + status + '\"' +
                 '}';
     }
 }

@@ -13,7 +13,7 @@
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
             <li class="layui-nav-item">
-                <a href="details.jsp" target="table">个人资料</a>
+                <a href="system_message.jsp" target="table">系统消息<span class="layui-badge layui-bg-gray">2</span></a>
             </li>
         </ul>
     </div>

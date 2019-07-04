@@ -1,9 +1,7 @@
 package dao;
 
 import javafx.util.Pair;
-import model.Book;
-import model.Reader;
-import model.Reader_Borrow_Return_History;
+import model.*;
 import util.SqlStateListener;
 
 import java.sql.SQLException;
@@ -34,15 +32,30 @@ public interface IReaderDao {
     // 获得个人详情
     Reader getReaderDetails(Reader r) throws SQLException;
 
+    // 获得读者列表
+    Pair<List<Reader>, Integer> getReaderList(int pageNow, int pageSize) throws SQLException;
+
+    // 获得读者列表
+    Pair<List<Reader>, Integer> getReaderListInKeyWord(String keyword, int pageNow, int pageSize) throws SQLException;
+
     // 获得历史记录
     Pair<List<Reader_Borrow_Return_History>, Integer> queryHistory(Reader r, int pageNow, int pageSize) throws Exception;
 
     // 获得有关键词历史记录
     Pair<List<Reader_Borrow_Return_History>, Integer> queryHistoryInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception;
 
-    // 查询读者类型
-    List<String> getReaderTypes() throws SQLException;
+    // 获得借书申请
+    Pair<List<Staff_DealWith_Reader_Borrow_History>, Integer> queryStaffDealWithReaderBorrowHistory(Reader r, int pageNow, int pageSize) throws Exception;
 
-    // 查询读者类型
-    List<String> getCollegeTypes() throws SQLException;
+    // 获得借书申请带关键词
+    Pair<List<Staff_DealWith_Reader_Borrow_History>, Integer> queryStaffDealWithReaderBorrowHistoryInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception;
+
+    // 获得还书申请
+    Pair<List<Staff_DealWith_Reader_Return_History>, Integer> queryStaffDealWithReaderReturnHistory(Reader r, int pageNow, int pageSize) throws Exception;
+
+    // 获得还书申请带关键词
+    Pair<List<Staff_DealWith_Reader_Return_History>, Integer> queryStaffDealWithReaderReturnHistoryInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception;
+
+    // 获得消息个数
+    Pair<List<Reader_Message>, Integer>  getMessageList(Reader r, int pageNow, int pageSize);
 }

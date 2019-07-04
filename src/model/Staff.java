@@ -15,6 +15,14 @@ public class Staff {
         Password = password;
     }
 
+    public Staff(String no, String password, String name, String gender, String phone) {
+        No = no;
+        Password = password;
+        Name = name;
+        Gender = gender;
+        Phone = phone;
+    }
+
     public String getNo() {
         return No;
     }
@@ -58,11 +66,11 @@ public class Staff {
     @Override
     public String toString() {
         return "{" +
-                "No='" + No + '\'' +
-                ", Password='" + Password + '\'' +
-                ", Name='" + Name + '\'' +
-                ", Gender='" + Gender + '\'' +
-                ", Phone='" + Phone + '\'' +
+                "\"No\":\"" + No + '\"' +
+                ", \"Password\":\"" + Password + '\"' +
+                ", \"Name\":\"" + Name + '\"' +
+                ", \"Gender\":\"" + Gender + '\"' +
+                ", \"Phone\":\"" + Phone + '\"' +
                 '}';
     }
 }

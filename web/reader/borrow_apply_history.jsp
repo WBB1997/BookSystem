@@ -19,42 +19,45 @@
 <body style="margin-top: 10px" scroll="no">
 <form class="layui-form">
     <div class="layui-inline">
-        <label class="layui-form-label">类别</label>
-        <div class="layui-inline">
-            <select id="type" lay-filter="type">
-                <option value="All">任意词</option>
-                <option value="ISBN">ISBN</option>
-                <option value="Name">书名</option>
-                <option value="Author">读者</option>
-                <option value="Type">类型</option>
-                <option value="Publisher">出版社</option>
-            </select>
-        </div>
+        <label class="layui-form-label">ISBN</label>
     </div>
     <div class="layui-inline">
-        <input type="text" id="searchWord" lay-verify="required" placeholder="输入关键词" autocomplete="off"
+        <input type="text" id="searchWord" lay-verify="required" placeholder="输入ISBN" autocomplete="off"
                class="layui-input">
     </div>
     <div class="layui-inline">
         <a id="searchId" class="layui-btn">查询</a>
-    </div>
-    <div class="layui-inline">
-        <a id="addId" class="layui-btn layui-btn-normal">添加</a>
     </div>
 </form>
 
 <table class="layui-hide" id="bookTable" lay-filter="bookTable"></table>
 
 <script type="text/html" id="bookBar">
-    {{#  if(d.Available > 0){ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="brow">借书</a>
-    {{#  } }}
+    {{#  if(d.Status === '待处理'){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="cancel">取消</a>
+    {{#  }}}
 </script>
 
 <script type="text/html" id="imgTpl">
     <div align="center">
         <img src="{{ d.Cover }}">
     </div>
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.Status === '待处理'){ }}
+    <div align="center">
+        <lable style="color: #fb830e">待处理</lable>
+    </div>
+    {{#  }else if (d.Status === '申请失败'){ }}
+    <div align="center">
+        <lable style="color: red">申请失败</lable>
+    </div>
+    {{# }else{ }}
+    <div align="center">
+        <lable style="color: green">申请成功</lable>
+    </div>
+    {{# }}}
 </script>
 
 
@@ -73,7 +76,7 @@
             elem: '#bookTable'
             , id: 'bookTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/BookServlet?action=getAllBooks' //数据接口
+            , url: '<%=request.getContextPath()%>/ReaderServlet?action=getReaderBorrowApplyHistory' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '书籍表'
             , page: true //开启分页
@@ -83,14 +86,10 @@
             , toolbar: ['print', 'filter', 'exports'] //开启工具栏，此处显示默认图标
             , cols: [[ //表头
                 {field: 'Cover', title: '封面', fixed: 'left', templet: '#imgTpl'}
-                , {field: 'ISBN', title: 'ISBN', sort: true}
                 , {field: 'Name', title: '书名'}
-                , {field: 'Author', title: '作者'}
-                , {field: 'Publisher', title: '出版社'}
-                , {field: 'PublishDate', title: '出版日期'}
-                , {field: 'Type', title: '类型'}
-                , {field: 'Amount', title: '馆藏', sort: true}
-                , {field: 'Available', title: '可借', sort: true}
+                , {field: 'ISBN', title: 'ISBN', sort: true}
+                , {field: 'Time', title: '时间'}
+                , {field: 'Status', title: '状态', templet: '#statusTpl'}
                 , {fixed: 'right', align: 'center', toolbar: '#bookBar'}
             ]]
         });
@@ -132,11 +131,9 @@
             // 注意参数(bookTable为表格id)
             // type为select选择框
             // searchWord为输入框
-            var keyword = $('#type').val();
             var searchWord = $('#searchWord').val();
-            console.log(keyword + searchWord);
             table.reload('bookTable', {
-                url: '<%=request.getContextPath()%>/BookServlet?action=getBooks&keyword=' + keyword + '&searchword=' + searchWord
+                url: '<%=request.getContextPath()%>/ReaderServlet?action=getReaderBorrowApplyHistory&keyword=' + searchWord
             });
         });
 
@@ -144,7 +141,7 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('bookTable', {
-                url: '<%=request.getContextPath()%>/BookServlet?action=getAllBooks'
+                url: '<%=request.getContextPath()%>/ReaderServlet?action=getReaderBorrowApplyHistory'
             });
         }
 

@@ -43,11 +43,9 @@ public class ReaderServlet extends BaseServlet{
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         String gender = req.getParameter("gender");
-        String college = req.getParameter("college");
         Reader r = new Reader(username,password);
         r.setName(name);
         r.setGender(gender);
-        r.setCollege(college);
         System.out.println(r);
         JSONObject jsonObject = new JSONObject();
         DaoFactory.getReaderDao().registerAccount(r, new SqlStateListener() {
@@ -63,7 +61,6 @@ public class ReaderServlet extends BaseServlet{
                 jsonObject.put("content", "注册成功");
             }
         });
-        System.out.println(jsonObject.toJSONString());
         return jsonObject.toJSONString();
     }
 
@@ -103,8 +100,6 @@ public class ReaderServlet extends BaseServlet{
             r.setPassword(new_password);
             r.setName(name);
             r.setGender(gender);
-            r.setType(type);
-            r.setCollege(college);
             DaoFactory.getReaderDao().modAccount(r, new SqlStateListener() {
                 @Override
                 public void Error(int ErrorCode, String ErrorMessage) {
@@ -140,19 +135,24 @@ public class ReaderServlet extends BaseServlet{
         Book b = new Book();
         b.setISBN(isbn);
         JSONObject jsonObject = new JSONObject();
-        DaoFactory.getReaderDao().borrowBook(r, b, new SqlStateListener() {
-            @Override
-            public void Error(int ErrorCode, String ErrorMessage) {
-                jsonObject.put("status", "error");
-                jsonObject.put("content", ErrorMessage);
-            }
+        if(DaoFactory.getReaderDao().checkReader(r)) {
+            DaoFactory.getReaderDao().borrowBook(r, b, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
 
-            @Override
-            public void Correct() {
-                jsonObject.put("status", "ok");
-                jsonObject.put("content", "借书成功！");
-            }
-        });
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "已提交申请，管理人员会及时审核并通知您！");
+                }
+            });
+        }else {
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号或密码错误");
+        }
         return jsonObject.toJSONString();
     }
 
@@ -181,6 +181,46 @@ public class ReaderServlet extends BaseServlet{
         return jsonObject.toJSONString();
     }
 
+    // 查询读者借阅申请记录
+    public String getReaderBorrowApplyHistory(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession(false);
+        Reader r = (Reader) session.getAttribute("Reader");
+        int pageNow = Integer.parseInt(req.getParameter("page"));
+        int pageSize = Integer.parseInt(req.getParameter("limit"));
+        String keyword = req.getParameter("keyword");
+        Pair<List<Staff_DealWith_Reader_Borrow_History>, Integer> list;
+        try {
+            if (keyword == null)
+                list = DaoFactory.getReaderDao().queryStaffDealWithReaderBorrowHistory(r, pageNow, pageSize);
+            else
+                list = DaoFactory.getReaderDao().queryStaffDealWithReaderBorrowHistoryInWord(r, keyword, pageNow, pageSize);
+            return RequestModel.buildSuccess(list.getValue(), list.getKey()).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RequestModel.buildError().toString();
+        }
+    }
+
+    // 查询读者借阅申请记录
+    public String getReaderReturnApplyHistory(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession(false);
+        Reader r = (Reader) session.getAttribute("Reader");
+        int pageNow = Integer.parseInt(req.getParameter("page"));
+        int pageSize = Integer.parseInt(req.getParameter("limit"));
+        String keyword = req.getParameter("keyword");
+        Pair<List<Staff_DealWith_Reader_Return_History>, Integer> list;
+        try {
+            if (keyword == null)
+                list = DaoFactory.getReaderDao().queryStaffDealWithReaderReturnHistory(r, pageNow, pageSize);
+            else
+                list = DaoFactory.getReaderDao().queryStaffDealWithReaderReturnHistoryInWord(r, keyword, pageNow, pageSize);
+            return RequestModel.buildSuccess(list.getValue(), list.getKey()).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RequestModel.buildError().toString();
+        }
+    }
+
     // 退出纪录
     public String loginOut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
@@ -189,19 +229,5 @@ public class ReaderServlet extends BaseServlet{
             resp.sendRedirect(req.getContextPath() + "/login.jsp");
         }
         return null;
-    }
-
-    // 获取读者类型
-    public String getCollegeTypes(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.addAll(DaoFactory.getReaderDao().getCollegeTypes());
-        return jsonArray.toJSONString();
-    }
-
-    // 获取读者类型
-    public String getReaderTypes(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.addAll(DaoFactory.getReaderDao().getReaderTypes());
-        return jsonArray.toJSONString();
     }
 }

@@ -3,6 +3,7 @@ package test;
 import dao.impl.BookDaoImpl;
 import model.Admin;
 import model.Book;
+import model.Staff;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,7 +34,7 @@ public class Sneak {
 
     // 获取每本书的URL
     public static String getEveryBook() {
-        Admin a = new Admin("690252189", "a690252189");
+        Staff s = new Staff("690252189", "a690252189");
         for (int i = 0; i < PageNum; i++) {
             try {
                 String url = BaseUrl + START + i * 25;
@@ -61,7 +62,6 @@ public class Sneak {
                                     if (innerElementText.equals("出品方:")
                                             || innerElementText.equals("原作名:")
                                             || innerElementText.equals("页数:")
-                                            || innerElementText.equals("定价:")
                                             || innerElementText.equals("装帧:")
                                             || innerElementText.equals("丛书:")
                                             || innerElementText.equals("副标题:")
@@ -85,15 +85,17 @@ public class Sneak {
                             System.out.println("Error : " + info.toString());
                         else {
                             Book book = new Book();
-                            book.setCover(info.get(0));
-                            book.setName(info.get(1));
-                            book.setAuthor(info.get(2));
-                            book.setPublisher(info.get(3));
-                            book.setPublishDate(info.get(4));
-                            book.setISBN(info.get(5));
+                            book.setCover(info.get(0).trim());
+                            book.setName(info.get(1).trim());
+                            book.setAuthor(info.get(2).trim());
+                            book.setPublisher(info.get(3).trim());
+                            book.setPublishDate(info.get(4).trim());
+                            book.setValue(Double.parseDouble(info.get(5).split("元")[0]));
+                            book.setISBN(info.get(6).trim());
                             book.setAmount(5);
                             book.setAvailable(5);
-                            new BookDaoImpl().PrivateAaddBook(a, book, new SqlStateListener() {
+                            book.setType("综合性图书");
+                            new BookDaoImpl().PrivateAaddBook(s, book, new SqlStateListener() {
                                 @Override
                                 public void Error(int ErrorCode, String ErrorMessage) {
                                     System.out.println("Error：" + ErrorMessage);

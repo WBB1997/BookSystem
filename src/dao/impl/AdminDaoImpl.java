@@ -2,9 +2,7 @@ package dao.impl;
 
 import dao.IAdminDao;
 import javafx.util.Pair;
-import model.Admin;
-import model.Staff_DealWith_Book_History;
-import model.Reader;
+import model.*;
 import oracle.jdbc.OracleTypes;
 import util.DatabaseBean;
 import util.MyUitl;
@@ -60,9 +58,50 @@ public class AdminDaoImpl implements IAdminDao {
         CallableStatement callableStatement = null;
         try {
             connection = DatabaseBean.getConnection();
-            callableStatement = connection.prepareCall("{call del_Account_Of_Admin(?, ?)}");
+            callableStatement = connection.prepareCall("{call del_Account_Of_Admin(?)}");
             callableStatement.setString(1, a.getNo());
-            callableStatement.setString(2, a.getPassword());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
+    @Override
+    public void defaultReaderPassword(Admin a, Reader r, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call default_Reader_Password(?, ?, ?)}");
+            callableStatement.setString(1, r.getNo());
+            callableStatement.setString(2, a.getNo());
+            callableStatement.setString(3, a.getPassword());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
+    @Override
+    public void defaultStaffPassword(Admin a, Staff s, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call default_Staff_Password(?, ?, ?)}");
+            callableStatement.setString(1, s.getNo());
+            callableStatement.setString(2, a.getNo());
+            callableStatement.setString(3, a.getPassword());
             callableStatement.execute();
             l.Correct();
         } catch (SQLException e) {
@@ -136,20 +175,6 @@ public class AdminDaoImpl implements IAdminDao {
     }
 
     @Override
-    public Pair<List<Reader>, Integer> getReaderList(Admin a, int pageNow, int pageSize) throws SQLException {
-        int count;
-        Connection connection = DatabaseBean.getConnection();
-        CallableStatement callableStatement = connection.prepareCall("{ ?=call query_reader_by_admin(?, ?, ?, ?, ?)}");
-        fillPara_6(callableStatement,a,pageNow,pageSize);
-        callableStatement.execute();
-        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
-        count =  callableStatement.getInt(6);
-        ArrayList<Reader> arrayList = getReader(resultSet);
-        DatabaseBean.close(resultSet, callableStatement, connection);
-        return new Pair<>(arrayList, count);
-    }
-
-    @Override
     public Admin getAdminDetails(Admin a) throws SQLException {
         Connection connection;
         CallableStatement callableStatement;
@@ -169,14 +194,18 @@ public class AdminDaoImpl implements IAdminDao {
         ArrayList<Staff_DealWith_Book_History> arrayList = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         while (resultSet.next()) {
-            Staff_DealWith_Book_History adminHistory = new Staff_DealWith_Book_History();
-            adminHistory.setNo(resultSet.getString("NO"));
-            adminHistory.setISBN(resultSet.getString("ISBN"));
-            adminHistory.setPurchaseDate(sdf.format(resultSet.getDate("PurchaseDate")));
-            adminHistory.setPurchaseAmount(resultSet.getInt("PurchaseAmount"));
-            adminHistory.setName(resultSet.getString("Name"));
-            adminHistory.setCover(resultSet.getString("Cover"));
-            arrayList.add(adminHistory);
+            Staff_DealWith_Book_History staffHistory = new Staff_DealWith_Book_History();
+            Book book = new Book();
+            Staff staff = new Staff();
+            staff.setNo(resultSet.getString("NO"));
+            book.setISBN(resultSet.getString("ISBN"));
+            staffHistory.setPurchaseDate(sdf.format(resultSet.getDate("PurchaseDate")));
+            staffHistory.setPurchaseAmount(resultSet.getInt("PurchaseAmount"));
+            book.setName(resultSet.getString("Name"));
+            book.setCover(resultSet.getString("Cover"));
+            staffHistory.setStaff(staff);
+            staffHistory.setBook(book);
+            arrayList.add(staffHistory);
         }
         return arrayList;
     }
@@ -186,18 +215,15 @@ public class AdminDaoImpl implements IAdminDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         while (resultSet.next()) {
             Reader reader = new Reader();
-            reader.setNo(resultSet.getString(1));
-            reader.setPassword("***********");
-            reader.setName(resultSet.getString(2));
-            reader.setGender(resultSet.getString(3));
-            reader.setType(resultSet.getString(4));
-            reader.setCollege(resultSet.getString(5));
-            reader.setTakeEffectDate(sdf.format(resultSet.getDate(6)));
-            Date date = resultSet.getDate(7);
+            reader.setNo(resultSet.getString("No"));
+            reader.setName(resultSet.getString("Name"));
+            reader.setGender(resultSet.getString("Gender"));
+            reader.setTakeEffectDate(sdf.format(resultSet.getDate("TakeEffectDate")));
+            Date date = resultSet.getDate("LoseEffectDate");
             if (date == null)
                 reader.setLoseEffectDate("-");
             else
-                reader.setLoseEffectDate(sdf.format(resultSet.getDate(7)));
+                reader.setLoseEffectDate(sdf.format(resultSet.getDate("LoseEffectDate")));
             arrayList.add(reader);
         }
         return arrayList;

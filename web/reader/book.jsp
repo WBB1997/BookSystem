@@ -13,10 +13,17 @@
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
             <li class="layui-nav-item">
-                <a href="BookTable.jsp" target="table">书籍资料</a>
+                <a href="book_table.jsp" target="table">书籍资料</a>
             </li>
             <li class="layui-nav-item">
-                <a href="history.jsp" target="table">借书记录</a>
+                <a href="borrow_return_history.jsp" target="table">借书记录</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;" target="table">申请记录</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="${pageContext.request.contextPath}/reader/borrow_apply_history.jsp" target="table">借书申请</a></dd>
+                    <dd><a href="${pageContext.request.contextPath}/reader/return_apply_history.jsp" target="table">还书申请</a></dd>
+                </dl>
             </li>
         </ul>
     </div>

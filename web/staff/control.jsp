@@ -14,8 +14,8 @@
         <div class="layui-logo">管理员后台</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item" ><a href="staff_table.jsp" target="table">工作人员管理</a></li>
-            <li class="layui-nav-item" ><a href="reader_table.jsp" target="table">读者管理</a></li>
+            <li class="layui-nav-item"  ><a href="staff_book.jsp" target="mainFrame">图书管理</a></li>
+            <li class="layui-nav-item"  ><a href="staff_reader.jsp" target="mainFrame">读者管理</a></li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -30,14 +30,20 @@
             <li class="layui-nav-item"><a href="<%=request.getContextPath()%>/AdminServlet?action=loginOut">退出</a></li>
         </ul>
     </div>
-</div>
-<%--中间区域--%>
-<div style="height: 1000px">
-    <iframe name="table" src="staff_table.jsp" style="border: none;width: 100%;height: 99%;">
-    </iframe>
+    <%-- 左边区域 --%>
+    <div class="layui-side layui-bg-black">
+        <iframe name="mainFrame" src="staff_book.jsp" style="border: none ;width: 100%; height: 99%;">
+        </iframe>
+    </div>
+    <%--中间区域--%>
+    <div class="layui-body">
+        <iframe name="table" src="BookTable.jsp" style="border: none;width: 100%;height: 99%;">
+        </iframe>
+    </div>
 </div>
 <script src="/layui-v2.5.4/layui/layui.js"></script>
 <script>
+    //JavaScript代码区域
     layui.use(['layer','element','jquery'], function () {
         var element = layui.element
             , $ = layui.jquery
@@ -54,6 +60,8 @@
                 // maxmin: true, //开启最大化最小化按钮
                 content: '/admin/admin_info.jsp',
                 end: function () {
+                    <%--alert("密码已更改，请重新登录");--%>
+                    <%--$(window).attr("location", '<%=request.getContextPath()%>/AdminServlet?action=loginOut');--%>
                 }
             });
         });

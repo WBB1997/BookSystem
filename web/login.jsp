@@ -21,7 +21,7 @@
     </c:if>
 
 </head>
-<body>
+<body background="img/login.jpg">
 <form class="form-horizontal" action="" method="post" role="form" id="from1"
       style="margin-top: 300px; width: 1500px; margin-left: 100px">
     <div class="form-group">
@@ -41,8 +41,9 @@
     <div class="form-group ">
         <div class="col-sm-offset-2 col-sm-1">
             <select class="form-control" id="select">
-                <option value="Admin">管理员</option>
                 <option value="Reader">读者</option>
+                <option value="Staff">工作人员</option>
+                <option value="Admin">管理员</option>
             </select>
         </div>
     </div>
@@ -53,24 +54,26 @@
         </div>
     </div>
 </form>
-<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="150" src="<%=request.getContextPath()%>/js/canvas-nest.js"></script>
+<%--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="150" src="<%=request.getContextPath()%>/js/canvas-nest.js"></script>--%>
 </body>
 <script src="/layui-v2.5.4/layui/layui.js"></script>
 <script>
     function checkForm() {
-        if (document.getElementById("select").value === 'Admin') {
-            document.getElementById("from1").setAttribute("action", "/AdminServlet?action=checkAccount");
-        } else
-            document.getElementById("from1").setAttribute("action", "/ReaderServlet?action=checkAccount");
+        switch (document.getElementById("select").value) {
+            case 'Admin':
+                document.getElementById("from1").setAttribute("action", "/AdminServlet?action=checkAccount");
+                break;
+            case 'Staff':
+                document.getElementById("from1").setAttribute("action", "/StaffServlet?action=checkAccount");
+                break;
+            case 'Reader':
+                document.getElementById("from1").setAttribute("action", "/ReaderServlet?action=checkAccount");
+                break;
+        }
     }
 
     layui.use(['form', 'laypage', 'layer', 'table', 'upload', 'element'], function () {
-        var form = layui.form
-            , laypage = layui.laypage //分页
-            , layer = layui.layer //弹层
-            , table = layui.table //表格
-            , upload = layui.upload //上传
-            , element = layui.element //元素操作
+        var layer = layui.layer //弹层
             , $ = layui.jquery;
 
 
@@ -84,10 +87,6 @@
                 area: ["740px", "550px"], // 宽高
                 // maxmin: true, //开启最大化最小化按钮
                 content: 'register.jsp',
-                end: function () {
-                    <%--alert("密码已更改，请重新登录");--%>
-                    <%--$(window).attr("location", '<%=request.getContextPath()%>/AdminServlet?action=loginOut');--%>
-                }
             });
         });
 

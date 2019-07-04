@@ -2,10 +2,17 @@ package model;
 
 public class Book_Request {
     private Reader reader;
-    private String ISBN;
-    private String name;
+    private Book book;
     private String time;
     private String status;
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
 
     public Reader getReader() {
         return reader;
@@ -13,22 +20,6 @@ public class Book_Request {
 
     public void setReader(Reader reader) {
         this.reader = reader;
-    }
-
-    public String getISBN() {
-        return ISBN;
-    }
-
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getTime() {

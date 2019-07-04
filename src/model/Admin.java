@@ -58,11 +58,11 @@ public class Admin {
     @Override
     public String toString() {
         return "{" +
-                "No='" + No + '\'' +
-                ", Password='" + Password + '\'' +
-                ", Name='" + Name + '\'' +
-                ", Gender='" + Gender + '\'' +
-                ", Phone='" + Phone + '\'' +
+                "\"No\":\"" + No + '\"' +
+                ", \"Password\":\"" + Password + '\"' +
+                ", \"Name\":\"" + Name + '\"' +
+                ", \"Gender\":\"" + Gender + '\"' +
+                ", \"Phone\":\"" + Phone + '\"' +
                 '}';
     }
 }

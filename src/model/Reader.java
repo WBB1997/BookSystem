@@ -5,8 +5,6 @@ public class Reader {
     private String Password;
     private String Name;
     private String Gender;
-    private String Type;
-    private String College;
     private int Fine;
     private String TakeEffectDate;
     private String LoseEffectDate;
@@ -59,22 +57,6 @@ public class Reader {
         Gender = gender;
     }
 
-    public String getType() {
-        return Type;
-    }
-
-    public void setType(String type) {
-        Type = type;
-    }
-
-    public String getCollege() {
-        return College;
-    }
-
-    public void setCollege(String college) {
-        College = college;
-    }
-
     public String getTakeEffectDate() {
         return TakeEffectDate;
     }
@@ -96,11 +78,9 @@ public class Reader {
         return "{" +
                 "\"No\":\"" + No + '\"' +
                 ", \"Password\":\"" + Password + '\"' +
-                ", \"Password\":" + Fine +
+                ", \"Fine\":" + Fine +
                 ", \"Name\":\"" + Name + '\"' +
                 ", \"Gender\":\"" + Gender + '\"' +
-                ", \"Type\":\"" + Type + '\"' +
-                ", \"College\":\"" + College + '\"' +
                 ", \"TakeEffectDate\":\"" + TakeEffectDate + '\"' +
                 ", \"LoseEffectDate\":\"" + LoseEffectDate + '\"' +
                 '}';
