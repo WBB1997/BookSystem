@@ -51,7 +51,7 @@ public class Reader_Message {
     @Override
     public String toString() {
         return "{" +
-                "\"Reader\":\"" + reader +
+                "\"No\":\"" + reader.getNo() + '\"' +
                 ", \"Time\":\"" + time + '\"' +
                 ", \"Title\":\"" + title + '\"' +
                 ", \"Message\":\"" + message + '\"' +

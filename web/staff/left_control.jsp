@@ -13,19 +13,19 @@
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
             <li class="layui-nav-item">
-                <a href="book_table.jsp" target="table">书架</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="borrow_return_history.jsp" target="table">借书记录</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;" target="table">申请记录<span class="layui-badge-dot layui-bg-red"></span></a>
+                <a href="javascript:;" target="table">申请<span class="layui-badge-dot layui-bg-red"></span></a>
                 <dl class="layui-nav-child">
-                    <dd><a href="${pageContext.request.contextPath}/reader/borrow_apply_history.jsp" target="table">我的借书<span class="layui-badge layui-bg-gray">1</span></a></dd>
-                    <dd><a href="${pageContext.request.contextPath}/reader/return_apply_history.jsp" target="table">我的还书<span class="layui-badge layui-bg-gray">2</span></a></dd>
-                    <dd><a href="${pageContext.request.contextPath}/reader/book_request.jsp" target="table">我的荐购<span class="layui-badge layui-bg-gray">2</span></a></dd>
+                    <dd><a href="${pageContext.request.contextPath}/staff/borrow_apply_message.jsp" target="table" id="borrow">借书申请<span class="layui-badge layui-bg-gray">2</span></a></dd>
+                    <dd><a href="${pageContext.request.contextPath}/staff/return_apply_message.jsp" target="table" id="return">还书申请<span class="layui-badge layui-bg-gray">3</span></a></dd>
+                    <dd><a href="${pageContext.request.contextPath}/staff/reader_request_apply.jsp" target="table" id="request">读者荐购<span class="layui-badge layui-bg-gray">5</span></a></dd>
                 </dl>
-            </li>s
+            </li>
+            <li class="layui-nav-item">
+                <a href="operate_book.jsp" target="table">书架</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="operate_book_history.jsp" target="table">操作历史</a>
+            </li>
         </ul>
     </div>
 </div>

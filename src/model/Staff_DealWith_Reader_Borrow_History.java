@@ -50,7 +50,8 @@ public class Staff_DealWith_Reader_Borrow_History {
     @Override
     public String toString() {
         return "{" +
-                "\"Cover\":\"" + book.getCover() + "\"" +
+                "\"Reader_No\":\"" + reader.getNo() + "\"" +
+                ", \"Cover\":\"" + book.getCover() + "\"" +
                 ", \"Name\":\"" + book.getName() + "\"" +
                 ", \"Time\":\"" + time + "\"" +
                 ", \"Status\":\"" + status +  "\"" +

@@ -124,8 +124,9 @@ public class ReaderDaoImpl implements IReaderDao {
         CallableStatement callableStatement = null;
         try {
             connection = DatabaseBean.getConnection();
-            callableStatement = connection.prepareCall("{call Return_Book(?, ?, ?)}");
-            fillPara_3(callableStatement, r, b);
+            callableStatement = connection.prepareCall("{call Return_Book(?, ?)}");
+            callableStatement.setString("Book_ISBN", b.getISBN());
+            callableStatement.setString("Reader_No", r.getNo());
             callableStatement.execute();
             l.Correct();
         } catch (SQLException e) {
@@ -382,6 +383,238 @@ public class ReaderDaoImpl implements IReaderDao {
         return new Pair<>(arrayList, count);
     }
 
+    @Override
+    public Pair<List<Reader_Message>, Integer> getMessageList(Reader r, int pageNow, int pageSize) throws SQLException {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call get_Reader_Message(?, ?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(5, OracleTypes.NUMBER);
+        callableStatement.setString(2, r.getNo());
+        callableStatement.setInt(3, pageNow);
+        callableStatement.setInt(4, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Reader_Message> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Reader_Message reader_message = new Reader_Message();
+            reader_message.setReader(r);
+            reader_message.setMessage(resultSet.getString("Message"));
+            reader_message.setStatus(resultSet.getString("Status"));
+            reader_message.setTitle(resultSet.getString("Title"));
+            Date date = resultSet.getDate("Time");
+            if (date == null)
+                reader_message.setTime("-");
+            else
+                reader_message.setTime(sdf.format(resultSet.getDate("Time")));
+            arrayList.add(reader_message);
+        }
+        count =  callableStatement.getInt(5);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public void cancelBorrowApply(Reader r, Book b, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call cancel_Reader_Borrow_Apply(?, ?)}");
+            callableStatement.setString(1, b.getISBN());
+            callableStatement.setString(2, r.getNo());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
+    @Override
+    public void cancelReturnApply(Reader r, Book b, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call cancel_Reader_Return_Apply(?, ?)}");
+            callableStatement.setString(1, b.getISBN());
+            callableStatement.setString(2, r.getNo());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
+    @Override
+    public void bookRequest(Book book, Reader reader, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call reader_book_request(?, ?, ?, ?, ?, ?)}");
+            callableStatement.setString("ReaderNo", reader.getNo());
+            callableStatement.setString("BookISBN", book.getISBN());
+            callableStatement.setString("BookName", book.getName());
+            callableStatement.setString("BookAuthor", book.getAuthor());
+            callableStatement.setString("BookPublisher", book.getPublisher());
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM");
+            java.util.Date date1 = sDateFormat.parse(book.getPublishDate());
+            Date date = new Date(date1.getTime());
+            callableStatement.setDate("BookPublishDate", date);
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
+    @Override
+    public Pair<List<Book_Request>, Integer> queryBookRequest(Reader r, int pageNow, int pageSize) throws Exception {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call query_Reader_Request_Book_History(?, ?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(5, OracleTypes.NUMBER);
+        callableStatement.setString(2, r.getNo());
+        callableStatement.setInt(3, pageNow);
+        callableStatement.setInt(4, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Book_Request> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Book_Request history = new Book_Request();
+            Book book = new Book();
+            Staff staff = new Staff();
+            book.setName(resultSet.getString("Name"));
+            book.setISBN(resultSet.getString("ISBN"));
+            book.setAuthor(resultSet.getString("Author"));
+            book.setPublisher(resultSet.getString("Publisher"));
+            staff.setNo(resultSet.getString("Staff_No"));
+            Date date = resultSet.getDate("PublishDate");
+            if (date == null)
+                book.setPublishDate("-");
+            else
+                book.setPublishDate(sdf.format(date));
+            history.setBook(book);
+            history.setStaff(staff);
+            history.setStatus(resultSet.getString("Status"));
+            history.setReader(r);
+            date = resultSet.getDate("Time");
+            if (date == null)
+                history.setTime("-");
+            else
+                history.setTime(sdf.format(date));
+            arrayList.add(history);
+        }
+        count =  callableStatement.getInt(5);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public Pair<List<Book_Request>, Integer> queryBookRequestInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call query_Reader_Request_Book_History_With_Keyword(?, ?, ?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(6, OracleTypes.NUMBER);
+        callableStatement.setString(2, r.getNo());
+        callableStatement.setString(3, ISBN);
+        callableStatement.setInt(4, pageNow);
+        callableStatement.setInt(5, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Book_Request> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Book_Request history = new Book_Request();
+            Book book = new Book();
+            Staff staff = new Staff();
+            book.setName(resultSet.getString("Name"));
+            book.setISBN(resultSet.getString("ISBN"));
+            book.setAuthor(resultSet.getString("Author"));
+            book.setPublisher(resultSet.getString("Publisher"));
+            staff.setNo(resultSet.getString("Staff_No"));
+            Date date = resultSet.getDate("PublishDate");
+            if (date == null)
+                book.setPublishDate("-");
+            else
+                book.setPublishDate(sdf.format(date));
+            history.setBook(book);
+            history.setStaff(staff);
+            history.setStatus(resultSet.getString("Status"));
+            history.setReader(r);
+            date = resultSet.getDate("Time");
+            if (date == null)
+                history.setTime("-");
+            else
+                history.setTime(sdf.format(date));
+            arrayList.add(history);
+        }
+        count =  callableStatement.getInt(6);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public void cancelBookRequest(Reader r, Book b, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call cancel_Book_Request(?, ?)}");
+            callableStatement.setString(1, b.getISBN());
+            callableStatement.setString(2, r.getNo());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
+    @Override
+    public void setMessage(Reader reader, String time, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call set_Reader_Message(?, ?)}");
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            java.util.Date date1 = sDateFormat.parse(time);
+            Date date = new Date(date1.getTime());
+            callableStatement.setDate("t", date);
+            callableStatement.setString("No", reader.getNo());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
     private ArrayList<Reader_Borrow_Return_History> getHistory(ResultSet resultSet) throws SQLException {
         ArrayList<Reader_Borrow_Return_History> arrayList = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -393,6 +626,8 @@ public class ReaderDaoImpl implements IReaderDao {
             book.setISBN(resultSet.getString("ISBN"));
             book.setCover(resultSet.getString("Cover"));
             book.setName(resultSet.getString("Name"));
+            readerBorrowReturnHistory.setReader(reader);
+            readerBorrowReturnHistory.setBook(book);
             readerBorrowReturnHistory.setBorrowDate(sdf.format(resultSet.getDate("BorrowDate")));
             readerBorrowReturnHistory.setShouldReturnDate(sdf.format(resultSet.getDate("ShouldReturnDate")));
             Date date = resultSet.getDate("ReturnDate");

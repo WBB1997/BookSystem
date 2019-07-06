@@ -42,10 +42,10 @@
 
 <table class="layui-hide" id="historyTable" lay-filter="history"></table>
 
-<script type="text/html" id="historyBar">
-    <%--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>--%>
-    <%--    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>--%>
-</script>
+<%--<script type="text/html" id="historyBar">--%>
+<%--    &lt;%&ndash;<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>&ndash;%&gt;--%>
+<%--    &lt;%&ndash;    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>&ndash;%&gt;--%>
+<%--</script>--%>
 
 <script type="text/html" id="imgTpl">
     <div align="center">
@@ -68,29 +68,30 @@
             elem: '#historyTable'
             , id: 'historyTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/AdminServlet?action=getHistory' //数据接口
+            , url: '<%=request.getContextPath()%>/StaffServlet?action=getHistory' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '历史表'
             , page: true //开启分页
             , limit: 15
+            , skin: 'line'
+            , even: true
             , limits: [15, 30, 45, 60]
             , curr: 1 //设定初始在第 1 页
             , toolbar: ['print', 'filter', 'exports'] //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {field: 'Cover', title: '封面', fixed: 'left', templet: '#imgTpl'}
-                , {field: 'Name', title: '书名'}
-                , {field: 'ISBN', title: 'ISBN'}
-                , {field: 'PurchaseDate', title: '时间', sort: true}
-                , {field: 'PurchaseAmount', title: '操作数量'}
+                // {field: 'Cover', title: '封面', fixed: 'left', templet: '#imgTpl'}
+                {field: 'Name', align: 'center', title: '书名'}
+                , {field: 'ISBN', align: 'center',title: 'ISBN'}
+                , {field: 'PurchaseDate', align: 'center',title: '时间', sort: true}
+                , {field: 'PurchaseAmount', align: 'center',title: '操作数量'}
             ]]
         });
 
         // 单击搜索
         $("#searchId").click(function () {
-            // 注意参数(myTable为表格id)
             var isbn = $("#input").val();
             table.reload('historyTable', {
-                url: '<%=request.getContextPath()%>/AdminServlet?action=getHistory&keyword=' + isbn
+                url: '<%=request.getContextPath()%>/StaffServlet?action=getHistory&keyword=' + isbn
             });
         });
 

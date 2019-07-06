@@ -53,11 +53,15 @@
     <div align="center">
         <lable style="color: red">申请失败</lable>
     </div>
-    {{# }else{ }}
+    {{#  }else if(d.Status === '申请成功'){ }}
     <div align="center">
         <lable style="color: green">申请成功</lable>
     </div>
-    {{# }}}
+    {{#  }else if (d.Status === '已取消'){ }}
+    <div align="center">
+        <lable style="color: green">已取消</lable>
+    </div>
+    {{#  }}}
 </script>
 
 
@@ -81,15 +85,17 @@
             , title: '书籍表'
             , page: true //开启分页
             , limit: 15
+            , skin: 'line'
+            , even: true
             , limits: [15, 30, 45, 60]
             , curr: 1 //设定初始在第 1 页
             , toolbar: ['print', 'filter', 'exports'] //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {field: 'Cover', title: '封面', fixed: 'left', templet: '#imgTpl'}
-                , {field: 'Name', title: '书名'}
-                , {field: 'ISBN', title: 'ISBN', sort: true}
-                , {field: 'Time', title: '时间'}
-                , {field: 'Status', title: '状态', templet: '#statusTpl'}
+                // {field: 'Cover', align: 'center', title: '封面', fixed: 'left', templet: '#imgTpl'}
+                {field: 'Name', align: 'center', title: '书名'}
+                , {field: 'ISBN', align: 'center', title: 'ISBN'}
+                , {field: 'Time', align: 'center', title: '时间'}
+                , {field: 'Status', align: 'center', title: '状态', templet: '#statusTpl'}
                 , {fixed: 'right', align: 'center', toolbar: '#bookBar'}
             ]]
         });
@@ -97,16 +103,14 @@
         table.on('tool(bookTable)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
-            if (layEvent === 'brow') {
-                layer.confirm('确定借书？', function (index) {
+            if (layEvent === 'cancel') {
+                layer.confirm('确定取消？', function (index) {
                     //向服务端发送删除指令
                     $.ajax({
                         type: 'get',
-                        url: '<%=request.getContextPath()%>/ReaderServlet?action=borrowBook',
+                        url: '<%=request.getContextPath()%>/ReaderServlet?action=cancelReturnApply',
                         data: {
                             isbn: data.ISBN//传向后端的数据
-                            , account: "<%=((Reader)session.getAttribute("Reader")).getNo()%>"//传向后端的数据
-                            , password: "<%=((Reader)session.getAttribute("Reader")).getPassword()%>"//传向后端的数据
                         },
                         contentType: 'application/json',
                         success: function (result) {

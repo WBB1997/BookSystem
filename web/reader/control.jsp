@@ -5,13 +5,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>读者后台</title>
+    <title>图书借阅系统</title>
     <link rel="stylesheet" href="/layui-v2.5.4/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">读者后台</div>
+        <div class="layui-logo">图书借阅系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"  ><a href="book.jsp" target="mainFrame">图书</a></li>
@@ -24,7 +24,8 @@
                     <%=((Reader)request.getSession().getAttribute("Reader")).getName()%>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a id="info">基本资料</a></dd>
+                    <dd><a id="info">个人资料</a></dd>
+                    <dd><a id="fine">缴纳罚款</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="<%=request.getContextPath()%>/ReaderServlet?action=loginOut">退出</a></li>
@@ -60,6 +61,17 @@
                 content: '/reader/reader_info.jsp',
                 end: function () {
                 }
+            });
+        });
+        $("#fine").on('click', function () {
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                closeBtn: 0, //不显示关闭按钮
+                anim: 1,
+                title: "",
+                shadeClose: true, //开启遮罩关闭
+                content: '<img src="${pageContext.request.contextPath}/img/alipay.jpg" width="300px"></img>'
             });
         });
     });

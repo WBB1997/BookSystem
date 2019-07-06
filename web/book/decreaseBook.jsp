@@ -1,5 +1,6 @@
 <%@ page import="model.Admin" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="model.Staff" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -40,9 +41,7 @@
                 url: '<%=request.getContextPath()%>/BookServlet?action=decreaseBook',
                 type: 'POST',
                 data: {
-                    account:"<%=((Admin)session.getAttribute("Admin")).getNo()%>"
-                    , password:"<%=((Admin)session.getAttribute("Admin")).getPassword()%>"
-                    , isbn: parent_json.ISBN
+                    isbn: parent_json.ISBN
                     , quantity: data.field.quantity
                 },
                 dataType: 'json',

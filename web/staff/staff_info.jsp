@@ -1,4 +1,5 @@
 <%@ page import="model.Admin" %>
+<%@ page import="model.Staff" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -122,12 +123,11 @@
 
         });
 
-
         form.val("from", {
-            "no": "<%=((Admin)session.getAttribute("Admin")).getNo()%>"
-            , "name": "<%=((Admin)session.getAttribute("Admin")).getName()%>"
-            , "sex": "<%=((Admin)session.getAttribute("Admin")).getGender()%>"
-            , "phone": "<%=((Admin)session.getAttribute("Admin")).getPhone()%>"
+            "no": "<%=((Staff)session.getAttribute("Staff")).getNo()%>"
+            , "name": "<%=((Staff)session.getAttribute("Staff")).getName()%>"
+            , "sex": "<%=((Staff)session.getAttribute("Staff")).getGender()%>"
+            , "phone": "<%=((Staff)session.getAttribute("Staff")).getPhone()%>"
         })
 
     });

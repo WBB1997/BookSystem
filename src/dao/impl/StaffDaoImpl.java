@@ -116,7 +116,7 @@ public class StaffDaoImpl implements IStaffDao {
     public Pair<List<Staff_DealWith_Book_History>, Integer> queryHistoryInWord(Staff s, String ISBN, int pageNow, int pageSize) throws Exception {
         int count;
         Connection connection = DatabaseBean.getConnection();
-        CallableStatement callableStatement = connection.prepareCall("{ ?=call query_admin_history_in_isbn(?, ?, ?, ?, ?, ?)}");
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call query_staff_history_in_isbn(?, ?, ?, ?, ?, ?)}");
         callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
         callableStatement.registerOutParameter(7, OracleTypes.NUMBER);
         callableStatement.setString(2, s.getNo());
@@ -181,6 +181,321 @@ public class StaffDaoImpl implements IStaffDao {
         Staff staffDetails = fillStaff(resultSet);
         DatabaseBean.close(null, callableStatement, connection);
         return staffDetails;
+    }
+
+    @Override
+    public Pair<List<Staff_DealWith_Reader_Borrow_History>, Integer> getStaffDealWithReaderBorrowHistory(int pageNow, int pageSize) throws SQLException {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call get_Staff_DealWith_Reader_Borrow_History(?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(4, OracleTypes.NUMBER);
+        callableStatement.setInt(2, pageNow);
+        callableStatement.setInt(3, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Staff_DealWith_Reader_Borrow_History> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Staff_DealWith_Reader_Borrow_History history = new Staff_DealWith_Reader_Borrow_History();
+            Book book = new Book();
+            Staff staff = new Staff();
+            Reader reader = new Reader();
+            book.setName(resultSet.getString("Name"));
+            book.setISBN(resultSet.getString("ISBN"));
+            book.setCover(resultSet.getString("Cover"));
+            staff.setNo(resultSet.getString("Staff_No"));
+            reader.setNo(resultSet.getString("Reader_No"));
+            history.setBook(book);
+            history.setStaff(staff);
+            history.setStatus(resultSet.getString("Status"));
+            history.setReader(reader);
+            Date date = resultSet.getDate("Time");
+            if (date == null)
+                history.setTime("-");
+            else
+                history.setTime(sdf.format(resultSet.getDate("Time")));
+            arrayList.add(history);
+        }
+        count =  callableStatement.getInt(4);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public Pair<List<Staff_DealWith_Reader_Borrow_History>, Integer> getStaffDealWithReaderBorrowHistoryWithWord(String keyword, int pageNow, int pageSize) throws SQLException {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call get_Staff_DealWith_Reader_Borrow_History_With_Keyword(?, ?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(5, OracleTypes.NUMBER);
+        callableStatement.setString(2, keyword);
+        callableStatement.setInt(3, pageNow);
+        callableStatement.setInt(4, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Staff_DealWith_Reader_Borrow_History> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Staff_DealWith_Reader_Borrow_History history = new Staff_DealWith_Reader_Borrow_History();
+            Book book = new Book();
+            Staff staff = new Staff();
+            Reader reader = new Reader();
+            book.setName(resultSet.getString("Name"));
+            book.setISBN(resultSet.getString("ISBN"));
+            book.setCover(resultSet.getString("Cover"));
+            staff.setNo(resultSet.getString("Staff_No"));
+            reader.setNo(resultSet.getString("Reader_No"));
+            history.setBook(book);
+            history.setStaff(staff);
+            history.setStatus(resultSet.getString("Status"));
+            history.setReader(reader);
+            Date date = resultSet.getDate("Time");
+            if (date == null)
+                history.setTime("-");
+            else
+                history.setTime(sdf.format(resultSet.getDate("Time")));
+            arrayList.add(history);
+        }
+        count =  callableStatement.getInt(5);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public Pair<List<Staff_DealWith_Reader_Return_History>, Integer> getStaffDealWithReaderReturnHistory(int pageNow, int pageSize) throws SQLException {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call get_Staff_DealWith_Reader_Return_History(?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(4, OracleTypes.NUMBER);
+        callableStatement.setInt(2, pageNow);
+        callableStatement.setInt(3, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Staff_DealWith_Reader_Return_History> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Staff_DealWith_Reader_Return_History history = new Staff_DealWith_Reader_Return_History();
+            Book book = new Book();
+            Staff staff = new Staff();
+            Reader reader = new Reader();
+            book.setName(resultSet.getString("Name"));
+            book.setISBN(resultSet.getString("ISBN"));
+            book.setCover(resultSet.getString("Cover"));
+            staff.setNo(resultSet.getString("Staff_No"));
+            reader.setNo(resultSet.getString("Reader_No"));
+            history.setBook(book);
+            history.setStaff(staff);
+            history.setStatus(resultSet.getString("Status"));
+            history.setReader(reader);
+            Date date = resultSet.getDate("Time");
+            if (date == null)
+                history.setTime("-");
+            else
+                history.setTime(sdf.format(resultSet.getDate("Time")));
+            arrayList.add(history);
+        }
+        count =  callableStatement.getInt(4);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public Pair<List<Staff_DealWith_Reader_Return_History>, Integer> getStaffDealWithReaderReturnHistoryWithWord(String keyword, int pageNow, int pageSize) throws SQLException {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call get_Staff_DealWith_Reader_Return_History_With_Keyword(?, ?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(5, OracleTypes.NUMBER);
+        callableStatement.setString(2, keyword);
+        callableStatement.setInt(3, pageNow);
+        callableStatement.setInt(4, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Staff_DealWith_Reader_Return_History> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Staff_DealWith_Reader_Return_History history = new Staff_DealWith_Reader_Return_History();
+            Book book = new Book();
+            Staff staff = new Staff();
+            Reader reader = new Reader();
+            book.setName(resultSet.getString("Name"));
+            book.setISBN(resultSet.getString("ISBN"));
+            book.setCover(resultSet.getString("Cover"));
+            staff.setNo(resultSet.getString("Staff_No"));
+            reader.setNo(resultSet.getString("Reader_No"));
+            history.setBook(book);
+            history.setStaff(staff);
+            history.setStatus(resultSet.getString("Status"));
+            history.setReader(reader);
+            Date date = resultSet.getDate("Time");
+            if (date == null)
+                history.setTime("-");
+            else
+                history.setTime(sdf.format(resultSet.getDate("Time")));
+            arrayList.add(history);
+        }
+        count =  callableStatement.getInt(5);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public void dealWithBorrowBook(String keyword, Book book, Staff staff, Reader reader, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call DealWith_Borrow_Book(?, ?, ?, ?)}");
+            callableStatement.setString("parameter", keyword);
+            callableStatement.setString("BookISBN", book.getISBN());
+            callableStatement.setString("ReaderNo", reader.getNo());
+            callableStatement.setString("StaffNo", staff.getNo());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
+    @Override
+    public void dealWithReturnBook(String keyword, Book book, Staff staff, Reader reader, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call DealWith_Return_Book(?, ?, ?, ?)}");
+            callableStatement.setString("parameter", keyword);
+            callableStatement.setString("BookISBN", book.getISBN());
+            callableStatement.setString("ReaderNo", reader.getNo());
+            callableStatement.setString("StaffNo", staff.getNo());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
+    }
+
+    @Override
+    public Pair<List<Book_Request>, Integer> getBookRequest(int pageNow, int pageSize) throws SQLException {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call get_Reader_Request_Book_History(?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(4, OracleTypes.NUMBER);
+        callableStatement.setInt(2, pageNow);
+        callableStatement.setInt(3, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Book_Request> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Book_Request history = new Book_Request();
+            Book book = new Book();
+            Staff staff = new Staff();
+            Reader reader = new Reader();
+            reader.setNo(resultSet.getString("No"));
+            book.setName(resultSet.getString("Name"));
+            book.setISBN(resultSet.getString("ISBN"));
+            book.setAuthor(resultSet.getString("Author"));
+            book.setPublisher(resultSet.getString("Publisher"));
+            staff.setNo(resultSet.getString("Staff_No"));
+            Date date = resultSet.getDate("PublishDate");
+            if (date == null)
+                book.setPublishDate("-");
+            else
+                book.setPublishDate(sdf.format(date));
+            history.setBook(book);
+            history.setStaff(staff);
+            history.setStatus(resultSet.getString("Status"));
+            history.setReader(reader);
+            date = resultSet.getDate("Time");
+            if (date == null)
+                history.setTime("-");
+            else
+                history.setTime(sdf.format(date));
+            arrayList.add(history);
+        }
+        count =  callableStatement.getInt(4);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public Pair<List<Book_Request>, Integer> getBookRequestWithWord(String keyword, int pageNow, int pageSize) throws SQLException {
+        int count;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Connection connection = DatabaseBean.getConnection();
+        CallableStatement callableStatement = connection.prepareCall("{ ?=call get_Reader_Request_Book_History_With_Keyword(?, ?, ?, ?)}");
+        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+        callableStatement.registerOutParameter(5, OracleTypes.NUMBER);
+        callableStatement.setString(2, keyword);
+        callableStatement.setInt(3, pageNow);
+        callableStatement.setInt(4, pageSize);
+        callableStatement.execute();
+        ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
+        ArrayList<Book_Request> arrayList = new ArrayList<>();
+        while (resultSet.next()){
+            Book_Request history = new Book_Request();
+            Book book = new Book();
+            Staff staff = new Staff();
+            Reader reader = new Reader();
+            reader.setNo(resultSet.getString("No"));
+            book.setName(resultSet.getString("Name"));
+            book.setISBN(resultSet.getString("ISBN"));
+            book.setAuthor(resultSet.getString("Author"));
+            book.setPublisher(resultSet.getString("Publisher"));
+            staff.setNo(resultSet.getString("Staff_No"));
+            Date date = resultSet.getDate("PublishDate");
+            if (date == null)
+                book.setPublishDate("-");
+            else
+                book.setPublishDate(sdf.format(date));
+            history.setBook(book);
+            history.setStaff(staff);
+            history.setStatus(resultSet.getString("Status"));
+            history.setReader(reader);
+            date = resultSet.getDate("Time");
+            if (date == null)
+                history.setTime("-");
+            else
+                history.setTime(sdf.format(date));
+            arrayList.add(history);
+        }
+        count =  callableStatement.getInt(5);
+        DatabaseBean.close(resultSet, callableStatement, connection);
+        return new Pair<>(arrayList, count);
+    }
+
+    @Override
+    public void dealWithBookRequest(String keyword, Book book, Staff staff, Reader reader, SqlStateListener l) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = DatabaseBean.getConnection();
+            callableStatement = connection.prepareCall("{call DealWith_Book_Request(?, ?, ?, ?)}");
+            callableStatement.setString("parameter", keyword);
+            callableStatement.setString("BookISBN", book.getISBN());
+            callableStatement.setString("ReaderNo", reader.getNo());
+            callableStatement.setString("StaffNo", staff.getNo());
+            callableStatement.execute();
+            l.Correct();
+        } catch (SQLException e) {
+            l.Error(e.getErrorCode(), MyUitl.DealWithErrMesage(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseBean.close(null, callableStatement, connection);
+        }
     }
 
     private ArrayList<Staff_DealWith_Book_History> getHistory(ResultSet resultSet) throws SQLException {

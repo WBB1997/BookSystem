@@ -27,7 +27,7 @@
     <div class="layui-inline">
         <label class="layui-form-label">ISBN</label>
         <div class="layui-input-block">
-            <input type="text" id="input" lay-verify="required" placeholder="请输入ISBN" autocomplete="off"
+            <input type="text" id="input" lay-verify="required" placeholder="输入ISBN" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
@@ -70,6 +70,8 @@
             elem: '#historyTable'
             , id: 'historyTable'
             , height: 'full-100'
+            , skin: 'line'
+            , even: true
             , url: '<%=request.getContextPath()%>/ReaderServlet?action=getHistory' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '历史表'
@@ -79,12 +81,12 @@
             , curr: 1 //设定初始在第 1 页
             , toolbar: ['print', 'filter', 'exports'] //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {field: 'Cover', title: '封面', fixed: 'left', templet: '#imgTpl'}
-                , {field: 'Name', title: '书名'}
-                , {field: 'ISBN', title: 'ISBN'}
-                , {field: 'BorrowDate', title: '借书日期', sort: true}
-                , {field: 'ShouldReturnDate', title: '应还日期'}
-                , {field: 'ReturnDate', title: '还书日期'}
+                // {field: 'Cover', title: '封面', fixed: 'left', templet: '#imgTpl'}
+                {field: 'Name', align: 'center', title: '书名', fixed: 'left'}
+                , {field: 'ISBN', align: 'center',title: 'ISBN'}
+                , {field: 'BorrowDate',align: 'center', title: '借书日期', sort: true}
+                , {field: 'ShouldReturnDate', align: 'center',title: '应还日期'}
+                , {field: 'ReturnDate',align: 'center', title: '还书日期'}
                 , {fixed: 'right', align: 'center', toolbar: '#historyBar'}
             ]]
         });
@@ -101,8 +103,6 @@
                         url: '<%=request.getContextPath()%>/ReaderServlet?action=returnBook',
                         data: {
                             isbn: data.ISBN//传向后端的数据
-                            , account: "<%=((Reader)session.getAttribute("Reader")).getNo()%>"//传向后端的数据
-                            , password: "<%=((Reader)session.getAttribute("Reader")).getPassword()%>"//传向后端的数据
                         },
                         contentType: 'application/json',
                         success: function (result) {

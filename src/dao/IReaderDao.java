@@ -56,6 +56,27 @@ public interface IReaderDao {
     // 获得还书申请带关键词
     Pair<List<Staff_DealWith_Reader_Return_History>, Integer> queryStaffDealWithReaderReturnHistoryInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception;
 
-    // 获得消息个数
-    Pair<List<Reader_Message>, Integer>  getMessageList(Reader r, int pageNow, int pageSize);
+    // 获得消息列表
+    Pair<List<Reader_Message>, Integer>  getMessageList(Reader r, int pageNow, int pageSize) throws SQLException;
+
+    // 取消借阅申请
+    void cancelBorrowApply(Reader r, Book b, SqlStateListener l);
+
+    // 取消归还申请
+    void cancelReturnApply(Reader r, Book b, SqlStateListener l);
+
+    // 书籍荐购
+    void bookRequest(Book book, Reader reader, SqlStateListener l);
+
+    // 获取读者的荐购信息
+    Pair<List<Book_Request>, Integer> queryBookRequest(Reader r, int pageNow, int pageSize) throws Exception;
+
+    // 获取读者的荐购申请带关键词
+    Pair<List<Book_Request>, Integer> queryBookRequestInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception;
+
+    // 取消荐购申请
+    void cancelBookRequest(Reader r, Book b, SqlStateListener l);
+
+    // 已读消息
+    void setMessage(Reader reader, String time ,SqlStateListener l);
 }

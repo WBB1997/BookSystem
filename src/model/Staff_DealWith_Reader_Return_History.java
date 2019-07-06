@@ -46,4 +46,17 @@ public class Staff_DealWith_Reader_Return_History {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"Reader_No\":\"" + reader.getNo() + "\"" +
+                ", \"Cover\":\"" + book.getCover() + "\"" +
+                ", \"Name\":\"" + book.getName() + "\"" +
+                ", \"Time\":\"" + time + "\"" +
+                ", \"Status\":\"" + status +  "\"" +
+                ", \"ISBN\":\"" + book.getISBN() +  "\"" +
+                ", \"Staff_No\":\"" + staff.getNo() +  "\"" +
+                '}';
+    }
 }

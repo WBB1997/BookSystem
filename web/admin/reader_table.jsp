@@ -54,7 +54,8 @@
             , height: 'full-200'
             , url: '<%=request.getContextPath()%>/AdminServlet?action=getReaderList' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
-            , title: '读者表'
+            , skin: 'line'
+            , even: true
             , page: true //开启分页
             , limit: 15
             , limits: [15, 30, 45, 60]

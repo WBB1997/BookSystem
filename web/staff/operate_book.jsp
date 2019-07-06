@@ -87,19 +87,21 @@
             , title: '书籍表'
             , page: true //开启分页
             , limit: 15
+            , skin: 'line'
+            , even: true
             , limits: [15, 30, 45, 60]
             , curr: 1 //设定初始在第 1 页
             , toolbar: ['print', 'filter', 'exports'] //开启工具栏，此处显示默认图标
             , cols: [[ //表头
                 {field: 'Cover', title: '封面', fixed: 'left', templet: '#imgTpl'}
-                , {field: 'ISBN', title: 'ISBN', sort: true}
                 , {field: 'Name', title: '书名'}
+                , {field: 'ISBN', title: 'ISBN'}
                 , {field: 'Author', title: '作者'}
                 , {field: 'Publisher', title: '出版社'}
                 , {field: 'PublishDate', title: '出版日期'}
                 , {field: 'Type', title: '类型'}
-                , {field: 'Amount', title: '馆藏', sort: true}
-                , {field: 'Available', title: '可借', sort: true}
+                , {field: 'Amount', title: '馆藏'}
+                , {field: 'Available', title: '可借'}
                 , {fixed: 'right', align: 'center', toolbar: '#bookBar'}
             ]]
         });
@@ -145,13 +147,10 @@
                     type: 2,
                     skin: 'layui-layer-lan',
                     closeBtn: 2,
-                    area: ["1380px", "800px"], // 宽高
+                    area: ["700px", "470px"], // 宽高
                     content: '<%request.getContextPath();%>/book/bookinfo.jsp',
                     end: function () {
                         flushTab();
-                    },
-                    success: function (layero, index) {
-                        layer.msg(layero, index);
                     }
                 });
             }
@@ -178,13 +177,12 @@
                 skin: 'layui-layer-lan',
                 closeBtn: 2,
                 // skin: 'layui-layer-rim', // 加上边框
-                area: ["1380px", "720px"], // 宽高
+                area: ["900px", "600px"], // 宽高
                 content: '/book/addBook.jsp',
                 end: function () {
                     flushTab();
                 }
             });
-
         });
 
         // 刷新表格
@@ -195,8 +193,6 @@
         }
 
     });
-
-
 </script>
 </body>
 </html>

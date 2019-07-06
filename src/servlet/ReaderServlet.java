@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @WebServlet( name = "ReaderServlet" , urlPatterns = {"/ReaderServlet"})
@@ -129,9 +130,7 @@ public class ReaderServlet extends BaseServlet{
     // 借书
     public String borrowBook(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String isbn = req.getParameter("isbn");
-        String password = req.getParameter("password");
-        String account = req.getParameter("account");
-        Reader r = new Reader(account, password);
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
         Book b = new Book();
         b.setISBN(isbn);
         JSONObject jsonObject = new JSONObject();
@@ -159,9 +158,7 @@ public class ReaderServlet extends BaseServlet{
     // 还书
     public String returnBook(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String isbn = req.getParameter("isbn");
-        String password = req.getParameter("password");
-        String account = req.getParameter("account");
-        Reader r = new Reader(account, password);
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
         Book b = new Book();
         b.setISBN(isbn);
         JSONObject jsonObject = new JSONObject();
@@ -175,9 +172,65 @@ public class ReaderServlet extends BaseServlet{
             @Override
             public void Correct() {
                 jsonObject.put("status", "ok");
-                jsonObject.put("content", "还书成功！");
+                jsonObject.put("content", "已提交申请，管理人员会及时审核并通知您！");
             }
         });
+        return jsonObject.toJSONString();
+    }
+
+    // 取消借阅
+    public String cancelBorrowApply(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String isbn = req.getParameter("isbn");
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
+        Book b = new Book();
+        b.setISBN(isbn);
+        JSONObject jsonObject = new JSONObject();
+        if(DaoFactory.getReaderDao().checkReader(r)) {
+            DaoFactory.getReaderDao().cancelBorrowApply(r, b, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
+
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "您的申请已取消！");
+                }
+            });
+        }else {
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号密码错误");
+        }
+        return jsonObject.toJSONString();
+    }
+
+    // 取消还书
+    public String cancelReturnApply(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String isbn = req.getParameter("isbn");
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
+        Book b = new Book();
+        b.setISBN(isbn);
+        JSONObject jsonObject = new JSONObject();
+        if(DaoFactory.getReaderDao().checkReader(r)) {
+            DaoFactory.getReaderDao().cancelReturnApply(r, b, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
+
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "您的申请已取消！");
+                }
+            });
+        }else {
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号密码错误");
+        }
         return jsonObject.toJSONString();
     }
 
@@ -201,7 +254,7 @@ public class ReaderServlet extends BaseServlet{
         }
     }
 
-    // 查询读者借阅申请记录
+    // 查询读者还书申请记录
     public String getReaderReturnApplyHistory(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession(false);
         Reader r = (Reader) session.getAttribute("Reader");
@@ -221,7 +274,140 @@ public class ReaderServlet extends BaseServlet{
         }
     }
 
-    // 退出纪录
+    // 查询用户消息
+    public String getReaderMessage(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession(false);
+        Reader r = (Reader) session.getAttribute("Reader");
+        int pageNow = Integer.parseInt(req.getParameter("page"));
+        int pageSize = Integer.parseInt(req.getParameter("limit"));
+        Pair<List<Reader_Message>, Integer> list;
+        try {
+            if (DaoFactory.getReaderDao().checkReader(r)) {
+                list = DaoFactory.getReaderDao().getMessageList(r, pageNow, pageSize);
+                return RequestModel.buildSuccess(list.getValue(), list.getKey()).toString();
+            } else
+                throw new Exception();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RequestModel.buildError().toString();
+        }
+    }
+
+    // 设置消息已读
+    public String setMessage(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
+        SimpleDateFormat sdf_input = new SimpleDateFormat("yyyy-MM-dd");//输入格式
+        SimpleDateFormat sdf_target = new SimpleDateFormat("yyyy-MM"); //转化成为的目标格式
+        String time = sdf_target.format(sdf_input.parse(req.getParameter("time")));
+        JSONObject jsonObject = new JSONObject();
+        if (DaoFactory.getReaderDao().checkReader(r)) {
+
+            DaoFactory.getReaderDao().setMessage(r, time, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
+
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "消息已读！");
+                }
+            });
+        }else{
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号密码错误");
+        }
+        return jsonObject.toJSONString();
+    }
+
+    // 读者荐购
+    public String readerBookRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String isbn = req.getParameter("isbn");
+        String name = req.getParameter("name");
+        String author = req.getParameter("author");
+        String publisher = req.getParameter("publisher");
+        String publishDate = req.getParameter("publishdate");
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
+        Book b = new Book();
+        b.setISBN(isbn);
+        b.setName(name);
+        b.setAuthor(author);
+        b.setPublisher(publisher);
+        b.setPublishDate(publishDate);
+        System.out.println(b);
+        JSONObject jsonObject = new JSONObject();
+        if(DaoFactory.getReaderDao().checkReader(r)) {
+            DaoFactory.getReaderDao().bookRequest(b, r, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
+
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "您的荐购已经提交！");
+                }
+            });
+        }else {
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号密码错误");
+        }
+        return jsonObject.toJSONString();
+    }
+
+    // 查询荐购历史
+    public String getReaderRequestHistory(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession(false);
+        Reader r = (Reader) session.getAttribute("Reader");
+        int pageNow = Integer.parseInt(req.getParameter("page"));
+        int pageSize = Integer.parseInt(req.getParameter("limit"));
+        String keyword = req.getParameter("keyword");
+        Pair<List<Book_Request>, Integer> list;
+        try {
+            if (keyword == null)
+                list = DaoFactory.getReaderDao().queryBookRequest(r, pageNow, pageSize);
+            else
+                list = DaoFactory.getReaderDao().queryBookRequestInWord(r, keyword, pageNow, pageSize);
+            return RequestModel.buildSuccess(list.getValue(), list.getKey()).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RequestModel.buildError().toString();
+        }
+    }
+
+    // 取消荐购申请
+    public String cancelBookRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String isbn = req.getParameter("isbn");
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
+        Book b = new Book();
+        b.setISBN(isbn);
+        JSONObject jsonObject = new JSONObject();
+        if(DaoFactory.getReaderDao().checkReader(r)) {
+            DaoFactory.getReaderDao().cancelBookRequest(r, b, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
+
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "您的申请已取消！");
+                }
+            });
+        }else {
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号密码错误");
+        }
+        return jsonObject.toJSONString();
+    }
+
+    // 退出
     public String loginOut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
         if (null != session) {

@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import model.Admin;
 import model.Book;
 import model.Reader;
+import model.Staff;
 import util.SqlStateListener;
 
 import java.sql.SQLException;
@@ -11,16 +12,16 @@ import java.util.List;
 
 public interface IBookDao {
     // 增加
-    void addBook(Admin a, Book b, SqlStateListener l);
+    void addBook(Staff staff, Book b, SqlStateListener l);
 
     // 添加
-    void increaseBook(Book b, int quantity, Admin a, SqlStateListener l);
+    void increaseBook(Book b, int quantity, Staff staff, SqlStateListener l);
 
     // 删除图书
-    void decreaseBook(Book b, int quantity, Admin a, SqlStateListener l);
+    void decreaseBook(Book b, int quantity, Staff staff, SqlStateListener l);
 
     // 修改图书
-    void modBook(Book b, Admin a, SqlStateListener l);
+    void modBook(Book b, Staff staff, SqlStateListener l);
 
     // 通过ISBN查询图书是否存在(精确查询)
     boolean checkBookOfISBN(Book b) throws Exception;

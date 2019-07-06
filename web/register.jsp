@@ -88,29 +88,29 @@
             }
         });
 
-        // 获取select 值
-        $(function () {
-            $.ajax({
-                url: "<%=request.getContextPath()%>/ReaderServlet?action=getCollegeTypes",//请求地址
-                type: "POST",//请求方式
-                dataType: "json",//返回数据类型
-                contentType: "application/json",
-                async: false,//同步
-                success: function (result) {
-                    var data = result;
-                    var proHtml = '';
-                    for (var o in data) {
-                        proHtml += '<option value="' + data[o] + '">' + data[o] + '</option>';
-                    }
-                    console.log(result);
-                    $("#college").html(proHtml);
-                },
-                error: function () {
-                    alert("fail");
-                }
-            });
-            form.render();
-        });
+        <%--// 获取select 值--%>
+        <%--$(function () {--%>
+        <%--    $.ajax({--%>
+        <%--        url: "<%=request.getContextPath()%>/ReaderServlet?action=getCollegeTypes",//请求地址--%>
+        <%--        type: "POST",//请求方式--%>
+        <%--        dataType: "json",//返回数据类型--%>
+        <%--        contentType: "application/json",--%>
+        <%--        async: false,//同步--%>
+        <%--        success: function (result) {--%>
+        <%--            var data = result;--%>
+        <%--            var proHtml = '';--%>
+        <%--            for (var o in data) {--%>
+        <%--                proHtml += '<option value="' + data[o] + '">' + data[o] + '</option>';--%>
+        <%--            }--%>
+        <%--            console.log(result);--%>
+        <%--            $("#college").html(proHtml);--%>
+        <%--        },--%>
+        <%--        error: function () {--%>
+        <%--            alert("fail");--%>
+        <%--        }--%>
+        <%--    });--%>
+        <%--    form.render();--%>
+        <%--});--%>
 
 
         // 提交 只有在验证全部通过后才会进入

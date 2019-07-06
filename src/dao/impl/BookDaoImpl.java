@@ -19,13 +19,27 @@ import java.util.List;
 
 public class BookDaoImpl implements IBookDao {
     @Override
-    public void addBook(Admin a, Book b, SqlStateListener l) {
+    public void addBook(Staff staff, Book b, SqlStateListener l) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
             connection = DatabaseBean.getConnection();
-            callableStatement = connection.prepareCall("{call add_Book(?, ?, ?, ?, ?, ?, ?, ?)}");
-            fillPara_11(callableStatement, a, b);
+            callableStatement = connection.prepareCall("{call add_Book(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            callableStatement.setString("Staff_Account", staff.getNo());
+            callableStatement.setString("Staff_PassWord", staff.getPassword());
+            callableStatement.setString("Book_ISBN", b.getISBN());
+            callableStatement.setString("Book_Name", b.getName());
+            callableStatement.setString("Book_Author", b.getAuthor());
+            callableStatement.setString("Book_Type", b.getType());
+            callableStatement.setString("Book_Publisher", b.getPublisher());
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM");
+            java.util.Date date1 = sDateFormat.parse(b.getPublishDate());
+            Date date = new Date(date1.getTime());
+            callableStatement.setDate("Book_PublishDate", date);
+            callableStatement.setDouble("Book_Value", b.getValue());
+            callableStatement.setInt("Book_Amount", b.getAmount());
+            callableStatement.setInt("Book_Available", b.getAvailable());
+            callableStatement.setString("Book_Cover", b.getCover());
             callableStatement.execute();
             l.Correct();
         } catch (SQLException e) {
@@ -38,13 +52,16 @@ public class BookDaoImpl implements IBookDao {
     }
 
     @Override
-    public void increaseBook(Book b, int quantity, Admin a, SqlStateListener l) {
+    public void increaseBook(Book b, int quantity, Staff staff, SqlStateListener l) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
             connection = DatabaseBean.getConnection();
             callableStatement = connection.prepareCall("{call increase_Book(?, ?, ?, ?)}");
-            fillPara_4(callableStatement, b, quantity, a);
+            callableStatement.setString("Book_ISBN", b.getISBN());
+            callableStatement.setInt("Quantity", quantity);
+            callableStatement.setString("Staff_Account", staff.getNo());
+            callableStatement.setString("Staff_PassWord", staff.getPassword());
             callableStatement.execute();
             l.Correct();
         } catch (SQLException e) {
@@ -57,13 +74,16 @@ public class BookDaoImpl implements IBookDao {
     }
 
     @Override
-    public void decreaseBook(Book b, int quantity, Admin a, SqlStateListener l) {
+    public void decreaseBook(Book b, int quantity, Staff staff, SqlStateListener l) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
             connection = DatabaseBean.getConnection();
             callableStatement = connection.prepareCall("{call decrease_Book(?, ?, ?, ?)}");
-            fillPara_4(callableStatement, b, quantity, a);
+            callableStatement.setString("Book_ISBN", b.getISBN());
+            callableStatement.setInt("Quantity", quantity);
+            callableStatement.setString("Staff_Account", staff.getNo());
+            callableStatement.setString("Staff_PassWord", staff.getPassword());
             callableStatement.execute();
             l.Correct();
         } catch (SQLException e) {
@@ -76,13 +96,25 @@ public class BookDaoImpl implements IBookDao {
     }
 
     @Override
-    public void modBook(Book b, Admin a, SqlStateListener l) {
+    public void modBook(Book b, Staff staff, SqlStateListener l) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
             connection = DatabaseBean.getConnection();
-            callableStatement = connection.prepareCall("{call mod_Book(?, ?, ?, ?, ?, ?, ?, ?)}");
-            fillPara_11(callableStatement, a, b);
+            callableStatement = connection.prepareCall("{call mod_Book(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            callableStatement.setString("Staff_Account", staff.getNo());
+            callableStatement.setString("Staff_PassWord", staff.getPassword());
+            callableStatement.setString("Book_ISBN", b.getISBN());
+            callableStatement.setString("Book_Name", b.getName());
+            callableStatement.setString("Book_Author", b.getAuthor());
+            callableStatement.setString("Book_Type", b.getType());
+            callableStatement.setString("Book_Publisher", b.getPublisher());
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM");
+            java.util.Date date1 = sDateFormat.parse(b.getPublishDate());
+            Date date = new Date(date1.getTime());
+            callableStatement.setDate("Book_PublishDate", date);
+            callableStatement.setDouble("Book_Value", b.getValue());
+            callableStatement.setString("Book_Cover", b.getCover());
             callableStatement.execute();
             l.Correct();
         } catch (SQLException e) {
@@ -167,31 +199,10 @@ public class BookDaoImpl implements IBookDao {
         ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
         ArrayList<String> arrayList = new ArrayList<>();
         while (resultSet.next()){
-            arrayList.add(resultSet.getString(1));
+            arrayList.add(resultSet.getString(2));
         }
         DatabaseBean.close(resultSet, callableStatement, connection);
         return arrayList;
-    }
-
-    private void fillPara_11(CallableStatement callableStatement, Admin a, Book b) throws SQLException, ParseException {
-        callableStatement.setString(1, a.getNo());
-        callableStatement.setString(2, a.getPassword());
-        callableStatement.setString(3, b.getISBN());
-        callableStatement.setString(4, b.getName());
-        callableStatement.setString(5, b.getAuthor());
-        callableStatement.setString(6, b.getType());
-        callableStatement.setString(7, b.getPublisher());
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM");
-        java.util.Date date1 = sDateFormat.parse(b.getPublishDate());
-        Date date = new Date(date1.getTime());
-        callableStatement.setDate(8, date);
-    }
-
-    private void fillPara_4(CallableStatement callableStatement, Book b, int quantity, Admin a) throws SQLException {
-        callableStatement.setString(1, b.getISBN());
-        callableStatement.setInt(2, quantity);
-        callableStatement.setString(3, a.getNo());
-        callableStatement.setString(4, a.getPassword());
     }
 
     private ArrayList<Book> getBook(ResultSet resultSet) throws SQLException {
@@ -208,6 +219,7 @@ public class BookDaoImpl implements IBookDao {
             b.setAmount(resultSet.getInt("Amount"));
             b.setAvailable(resultSet.getInt("Available"));
             b.setCover(resultSet.getString("Cover"));
+            b.setValue(resultSet.getDouble("Value"));
             bookArrayList.add(b);
         }
         return bookArrayList;
@@ -219,21 +231,21 @@ public class BookDaoImpl implements IBookDao {
         try {
             connection = DatabaseBean.getConnection();
             callableStatement = connection.prepareCall("{call add_Book(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)}");
-            callableStatement.setString(1, s.getNo());
-            callableStatement.setString(2, s.getPassword());
-            callableStatement.setString(3, b.getISBN());
-            callableStatement.setString(4, b.getName());
-            callableStatement.setString(5, b.getAuthor());
-            callableStatement.setString(6, b.getType());
-            callableStatement.setString(7, b.getPublisher());
+            callableStatement.setString("Staff_Account", s.getNo());
+            callableStatement.setString("Staff_PassWord", s.getPassword());
+            callableStatement.setString("Book_ISBN", b.getISBN());
+            callableStatement.setString("Book_Name", b.getName());
+            callableStatement.setString("Book_Author", b.getAuthor());
+            callableStatement.setString("Book_Type", b.getType());
+            callableStatement.setString("Book_Publisher", b.getPublisher());
             SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM");
             java.util.Date date1 = sDateFormat.parse(b.getPublishDate());
             Date date = new Date(date1.getTime());
-            callableStatement.setDate(8, date);
-            callableStatement.setDouble(9, b.getValue());
-            callableStatement.setInt(10, b.getAmount());
-            callableStatement.setInt(11, b.getAvailable());
-            callableStatement.setString(12, b.getCover());
+            callableStatement.setDate("Book_PublishDate", date);
+            callableStatement.setDouble("Book_Value", b.getValue());
+            callableStatement.setInt("Book_Amount", b.getAmount());
+            callableStatement.setInt("Book_Available", b.getAvailable());
+            callableStatement.setString("Book_Cover", b.getCover());
             callableStatement.execute();
             l.Correct();
         } catch (SQLException e) {

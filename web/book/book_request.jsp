@@ -17,13 +17,6 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">封面</label>
-        <div class="layui-input-block">
-            <input type="text" name="cover" lay-verify="required|cover" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
         <label class="layui-form-label">ISBN</label>
         <div class="layui-input-block">
             <input type="text" name="isbn" lay-verify="required|isbn" layui-disabledautocomplete="off"
@@ -37,22 +30,6 @@
             <input type="text" id="author" name="author" lay-verify="required|author" placeholder="请输入作者"
                    autocomplete="off"
                    class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">价格</label>
-        <div class="layui-input-block">
-            <input type="text" name="value" lay-verify="required|number|value" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">书籍类型</label>
-        <div class="layui-input-inline">
-            <select name="type" lay-filter="type" id="type">
-                <option value=""></option>
-            </select>
         </div>
     </div>
 
@@ -98,46 +75,17 @@
         laydate.render({
             elem: '#publishdate'
             ,trigger : 'click'
-            , fixed: true
-        });
-
-
-
-        // select
-        $(function () {
-            $.ajax({
-                url: "<%=request.getContextPath()%>/BookServlet?action=getBookTypes",//请求地址
-                type: "POST",//请求方式
-                dataType: "json",//返回数据类型
-                contentType: "application/json",
-                async: false,//同步
-                success: function (result) {
-                    var data = result;
-                    var proHtml = '';
-                    for (var o in data) {
-                        proHtml += '<option value="' + data[o] + '">' + data[o] + '</option>';
-                    }
-                    $("#type").html(proHtml);
-                    form.render("select");
-                },
-                error: function () {
-                    alert("fail");
-                }
-            });
         });
 
         // 提交 只有在验证全部通过后才会进入
         form.on('submit(submit)', function (data) {
             $.ajax({
-                url: '<%=request.getContextPath()%>/BookServlet?action=addBook',
+                url: '<%=request.getContextPath()%>/ReaderServlet?action=readerBookRequest',
                 type: 'POST',
                 data: {
                     name: data.field.name
                     , isbn: data.field.isbn
                     , author: data.field.author
-                    , type: data.field.type
-                    , value: data.field.value
-                    , cover: data.field.cover
                     , publisher: data.field.publisher
                     , publishdate: data.field.publishdate
                 },

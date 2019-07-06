@@ -57,9 +57,10 @@
             , height: 'full-200'
             , url: '<%=request.getContextPath()%>/AdminServlet?action=getStaffList' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
-            , title: '读者表'
             , page: true //开启分页
             , limit: 15
+            , skin: 'line'
+            , even: true
             , limits: [15, 30, 45, 60]
             , curr: 1 //设定初始在第 1 页
             , toolbar: ['print', 'filter', 'exports'] //开启工具栏，此处显示默认图标

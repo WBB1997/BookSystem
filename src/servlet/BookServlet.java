@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import javafx.util.Pair;
 import model.Admin;
 import model.Book;
+import model.Staff;
 import service.RequestModel;
 import util.DaoFactory;
 import util.SqlStateListener;
@@ -41,12 +42,12 @@ public class BookServlet extends BaseServlet {
         String author = req.getParameter("author");
         String type = req.getParameter("type");
         String publisher = req.getParameter("publisher");
-        SimpleDateFormat sdf_input = new SimpleDateFormat("yyyy-MM-dd");//输入格式
-        SimpleDateFormat sdf_target = new SimpleDateFormat("yyyy-MM"); //转化成为的目标格式
+        Double value = Double.valueOf(req.getParameter("value"));
+        String cover = req.getParameter("cover");
+        SimpleDateFormat sdf_input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//输入格式
+        SimpleDateFormat sdf_target = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); //转化成为的目标格式
         String publishdate = sdf_target.format(sdf_input.parse(req.getParameter("publishdate")));
-        String account = req.getParameter("account");
-        String password = req.getParameter("password");
-        Admin a = new Admin(account, password);
+        Staff a = (Staff) req.getSession().getAttribute("Staff");
         Book b = new Book();
         JSONObject jsonObject = new JSONObject();
         b.setName(name);
@@ -55,6 +56,9 @@ public class BookServlet extends BaseServlet {
         b.setType(type);
         b.setPublisher(publisher);
         b.setPublishDate(publishdate);
+        b.setCover(cover);
+        b.setValue(value);
+        System.out.println(b);
         DaoFactory.getBookDao().modBook(b, a, new SqlStateListener() {
             @Override
             public void Error(int ErrorCode, String ErrorMessage) {
@@ -81,9 +85,7 @@ public class BookServlet extends BaseServlet {
         SimpleDateFormat sdf_input = new SimpleDateFormat("yyyy-MM-dd");//输入格式
         SimpleDateFormat sdf_target = new SimpleDateFormat("yyyy-MM"); //转化成为的目标格式
         String publishdate = sdf_target.format(sdf_input.parse(req.getParameter("publishdate")));
-        String account = req.getParameter("account");
-        String password = req.getParameter("password");
-        Admin a = new Admin(account, password);
+        Staff a = (Staff) req.getSession().getAttribute("Staff");
         Book b = new Book();
         JSONObject jsonObject = new JSONObject();
         b.setName(name);
@@ -92,6 +94,7 @@ public class BookServlet extends BaseServlet {
         b.setType(type);
         b.setPublisher(publisher);
         b.setPublishDate(publishdate);
+        System.out.println(b);
         DaoFactory.getBookDao().addBook(a, b, new SqlStateListener() {
             @Override
             public void Error(int ErrorCode, String ErrorMessage) {
@@ -112,13 +115,11 @@ public class BookServlet extends BaseServlet {
     public String increaseBook(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String isbn = req.getParameter("isbn");
         int quantity = Integer.parseInt(req.getParameter("quantity"));
-        String account = req.getParameter("account");
-        String password = req.getParameter("password");
-        Admin a = new Admin(account, password);
+        Staff staff = (Staff) req.getSession().getAttribute("Staff");
         Book b = new Book();
         JSONObject jsonObject = new JSONObject();
         b.setISBN(isbn);
-        DaoFactory.getBookDao().increaseBook(b, quantity, a, new SqlStateListener() {
+        DaoFactory.getBookDao().increaseBook(b, quantity, staff, new SqlStateListener() {
             @Override
             public void Error(int ErrorCode, String ErrorMessage) {
                 jsonObject.put("status", "error");
@@ -138,14 +139,11 @@ public class BookServlet extends BaseServlet {
     public String decreaseBook(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String isbn = req.getParameter("isbn");
         int quantity = Integer.parseInt(req.getParameter("quantity"));
-        String account = req.getParameter("account");
-        String password = req.getParameter("password");
-        Admin a = new Admin(account, password);
+        Staff staff = (Staff) req.getSession().getAttribute("Staff");
         Book b = new Book();
         JSONObject jsonObject = new JSONObject();
         b.setISBN(isbn);
-        System.out.println(b.toString());
-        DaoFactory.getBookDao().decreaseBook(b, quantity, a, new SqlStateListener() {
+        DaoFactory.getBookDao().decreaseBook(b, quantity, staff, new SqlStateListener() {
             @Override
             public void Error(int ErrorCode, String ErrorMessage) {
                 jsonObject.put("status", "error");
@@ -173,7 +171,6 @@ public class BookServlet extends BaseServlet {
         int pageSize = Integer.parseInt(req.getParameter("limit"));
         String keyword = req.getParameter("keyword");
         String searchword = req.getParameter("searchword");
-        System.out.println("page" + pageNow + " limit" + pageSize + " keyword" + keyword + " searchword" + searchword);
         try {
             Pair<List<Book>, Integer> books;
             if (keyword.equals("All"))

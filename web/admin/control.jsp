@@ -11,7 +11,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">管理员后台</div>
+        <div class="layui-logo">管理员后台-图书管理系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item" ><a href="staff_table.jsp" target="table">工作人员管理</a></li>
@@ -24,7 +24,7 @@
                     <%=((Admin)request.getSession().getAttribute("Admin")).getName()%>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a id="info">基本资料</a></dd>
+                    <dd><a id="info">个人资料</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="<%=request.getContextPath()%>/AdminServlet?action=loginOut">退出</a></li>

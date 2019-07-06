@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="form-group ">
-        <div class="col-sm-offset-2 col-sm-1">
+        <div class="col-sm-offset-2 col-sm-2">
             <select class="form-control" id="select">
                 <option value="Reader">读者</option>
                 <option value="Staff">工作人员</option>

@@ -37,6 +37,11 @@
                    autocomplete="off"
                    class="layui-input">
         </div>
+        <label class="layui-form-label">罚款</label>
+        <div class="layui-input-inline">
+            <input type="password" id="fine" name="fine" lay-verify="fine" placeholder="罚款"
+                   autocomplete="off" class="layui-input layui-disabled" readonly unselectable="on">
+        </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">确认新密码</label>

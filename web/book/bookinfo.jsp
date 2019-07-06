@@ -1,5 +1,4 @@
-<%@ page import="model.Admin" %>
-<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="model.Staff" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,14 +10,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">书名</label>
         <div class="layui-input-block">
-            <input type="text" name="name" lay-verify="name" autocomplete="off" class="layui-input">
+            <input type="text" name="name" lay-verify="required|name" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">ISBN</label>
         <div class="layui-input-block">
-            <input type="text" name="isbn" lay-verify="isbn" layui-disabledautocomplete="off"
+            <input type="text" name="isbn" lay-verify="required|isbn" layui-disabledautocomplete="off"
                    class="layui-input layui-disabled"
                    readonly unselectable="on">
         </div>
@@ -27,7 +26,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">作者</label>
         <div class="layui-input-block">
-            <input type="text" id="author" name="author" lay-verify="author" placeholder="请输入作者"
+            <input type="text" id="author" name="author" lay-verify="required|author" placeholder="请输入作者"
                    autocomplete="off"
                    class="layui-input">
         </div>
@@ -45,7 +44,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">出版社</label>
         <div class="layui-input-block">
-            <input type="text" name="publisher" lay-verify="publisher" placeholder="请输入出版社" autocomplete="off"
+            <input type="text" name="publisher" lay-verify="required|publisher" placeholder="请输入出版社" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
@@ -53,7 +52,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">出版日期</label>
         <div class="layui-input-block">
-            <input type="text" id="publishdate" name="publishdate" lay-verify="publishdate" placeholder="请输入出版时间"
+            <input type="text" id="publishdate" name="publishdate" lay-verify="required|publishdate"
+                   placeholder="请输入出版时间"
                    autocomplete="off"
                    class="layui-input">
         </div>
@@ -78,8 +78,12 @@
             , element = layui.element;
 
 
+        $(this).removeAttr("lay-key");
+
         laydate.render({
             elem: '#publishdate'
+            , trigger: 'click'
+            , fixed: true
         });
 
 
@@ -89,14 +93,14 @@
                 url: '<%=request.getContextPath()%>/BookServlet?action=updateBook',
                 type: 'POST',
                 data: {
-                    account:"<%=((Admin)session.getAttribute("Admin")).getNo()%>"
-                    , password:"<%=((Admin)session.getAttribute("Admin")).getPassword()%>"
-                    , name: data.field.name
+                    name: data.field.name
                     , isbn: data.field.isbn
                     , author: data.field.author
                     , type: data.field.type
                     , publisher: data.field.publisher
                     , publishdate: data.field.publishdate
+                    , value: parent_json.Value
+                    , cover: parent_json.Cover
                 },
                 dataType: 'json',
                 async: false,
@@ -114,8 +118,8 @@
         // 验证密码
         form.verify({
             name: [/\S/, '书名不能为空'],
-            author:[/\S/, '作者不能为空'],
-            publisher:[/\S/, '出版社不能为空'],
+            author: [/\S/, '作者不能为空'],
+            publisher: [/\S/, '出版社不能为空'],
             re_password: function (value) {
                 var repassvalue = $('#password').val();
                 if (value.length < 6 || value.length > 18)
@@ -159,8 +163,6 @@
             , "type": parent_json.Type
             , "publisher": parent_json.Publisher
             , "publishdate": parent_json.PublishDate
-            , "amount": parent_json.Amount
-            , "available": parent_json.Available
         })
     });
 </script>
