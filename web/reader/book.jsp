@@ -24,6 +24,7 @@
                     <dd><a href="${pageContext.request.contextPath}/reader/borrow_apply_history.jsp" target="table">我的借书<span class="layui-badge layui-bg-gray">1</span></a></dd>
                     <dd><a href="${pageContext.request.contextPath}/reader/return_apply_history.jsp" target="table">我的还书<span class="layui-badge layui-bg-gray">2</span></a></dd>
                     <dd><a href="${pageContext.request.contextPath}/reader/book_request.jsp" target="table">我的荐购<span class="layui-badge layui-bg-gray">2</span></a></dd>
+                    <dd><a href="${pageContext.request.contextPath}/reader/reader_subscribe.jsp" target="table">我的预约<span class="layui-badge layui-bg-gray">5</span></a></dd>
                 </dl>
             </li>s
         </ul>

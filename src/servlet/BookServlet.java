@@ -156,7 +156,6 @@ public class BookServlet extends BaseServlet {
                 jsonObject.put("content", "减少成功");
             }
         });
-        System.out.println(jsonObject.toJSONString());
         return jsonObject.toJSONString();
     }
 

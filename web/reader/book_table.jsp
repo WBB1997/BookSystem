@@ -131,7 +131,7 @@
                     //向服务端发送删除指令
                     $.ajax({
                         type: 'get',
-                        url: '<%=request.getContextPath()%>/ReaderServlet?action=borrowBook',
+                        url: '<%=request.getContextPath()%>/ReaderServlet?action=BookSubscribe',
                         data: {
                             isbn: data.ISBN//传向后端的数据
                         },

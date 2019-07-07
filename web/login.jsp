@@ -86,7 +86,7 @@
                 // skin: 'layui-layer-rim', // 加上边框
                 area: ["740px", "550px"], // 宽高
                 // maxmin: true, //开启最大化最小化按钮
-                content: 'register.jsp',
+                content: 'register.jsp'
             });
         });
 

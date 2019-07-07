@@ -236,7 +236,7 @@ public class ReaderServlet extends BaseServlet{
 
     // 查询读者借阅申请记录
     public String getReaderBorrowApplyHistory(HttpServletRequest req, HttpServletResponse resp) {
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
         Reader r = (Reader) session.getAttribute("Reader");
         int pageNow = Integer.parseInt(req.getParameter("page"));
         int pageSize = Integer.parseInt(req.getParameter("limit"));
@@ -398,6 +398,113 @@ public class ReaderServlet extends BaseServlet{
                 public void Correct() {
                     jsonObject.put("status", "ok");
                     jsonObject.put("content", "您的申请已取消！");
+                }
+            });
+        }else {
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号密码错误");
+        }
+        return jsonObject.toJSONString();
+    }
+
+
+    // 读者预约
+    public String BookSubscribe(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String isbn = req.getParameter("isbn");
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
+        Book b = new Book();
+        b.setISBN(isbn);
+        JSONObject jsonObject = new JSONObject();
+        if(DaoFactory.getReaderDao().checkReader(r)) {
+            DaoFactory.getReaderDao().bookSubscribe(r, b, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    System.out.println(ErrorMessage);
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
+
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "您的预约已提交！");
+                }
+            });
+        }else {
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号密码错误");
+        }
+        return jsonObject.toJSONString();
+    }
+
+    // 取消预约
+    public String cancelBookSubscribe(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String isbn = req.getParameter("isbn");
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
+        Book b = new Book();
+        b.setISBN(isbn);
+        JSONObject jsonObject = new JSONObject();
+        if(DaoFactory.getReaderDao().checkReader(r)) {
+            DaoFactory.getReaderDao().cancelBookSubscribe(r, b, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
+
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "您的预约已取消！");
+                }
+            });
+        }else {
+            jsonObject.put("status", "error");
+            jsonObject.put("content", "账号密码错误");
+        }
+        return jsonObject.toJSONString();
+    }
+
+    // 查询用户预约
+    public String getReaderBookSubscribe(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+        Reader r = (Reader) session.getAttribute("Reader");
+        int pageNow = Integer.parseInt(req.getParameter("page"));
+        int pageSize = Integer.parseInt(req.getParameter("limit"));
+        String keyword = req.getParameter("keyword");
+        Pair<List<Book_Subscribe>, Integer> list;
+        try {
+            if (keyword == null)
+                list = DaoFactory.getReaderDao().queryBookSubscribe(r, pageNow, pageSize);
+            else
+                list = DaoFactory.getReaderDao().queryBookSubscribeInWord(r, keyword, pageNow, pageSize);
+            return RequestModel.buildSuccess(list.getValue(), list.getKey()).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RequestModel.buildError().toString();
+        }
+    }
+
+    // 续借图书
+    public String continueBorrow(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String isbn = req.getParameter("isbn");
+        Reader r = (Reader) req.getSession().getAttribute("Reader");
+        Book b = new Book();
+        b.setISBN(isbn);
+        JSONObject jsonObject = new JSONObject();
+        if(DaoFactory.getReaderDao().checkReader(r)) {
+            DaoFactory.getReaderDao().continueBorrow(r, b, new SqlStateListener() {
+                @Override
+                public void Error(int ErrorCode, String ErrorMessage) {
+                    System.out.println(ErrorMessage);
+                    jsonObject.put("status", "error");
+                    jsonObject.put("content", ErrorMessage);
+                }
+
+                @Override
+                public void Correct() {
+                    jsonObject.put("status", "ok");
+                    jsonObject.put("content", "续借成功！");
                 }
             });
         }else {

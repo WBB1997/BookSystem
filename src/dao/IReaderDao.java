@@ -79,4 +79,19 @@ public interface IReaderDao {
 
     // 已读消息
     void setMessage(Reader reader, String time ,SqlStateListener l);
+
+    // 读者预约
+    void bookSubscribe(Reader r, Book b, SqlStateListener l);
+
+    // 取消读者预约
+    void cancelBookSubscribe(Reader r, Book b, SqlStateListener l);
+
+    // 查询读者的所有预约
+    Pair<List<Book_Subscribe>, Integer> queryBookSubscribe(Reader r, int pageNow, int pageSize) throws Exception;
+
+    // 获取读者的所有预约申请带关键词
+    Pair<List<Book_Subscribe>, Integer> queryBookSubscribeInWord(Reader r, String ISBN, int pageNow, int pageSize) throws Exception;
+
+    // 续借
+    void continueBorrow(Reader r, Book b, SqlStateListener l);
 }

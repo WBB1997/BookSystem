@@ -45,6 +45,7 @@
 <script type="text/html" id="historyBar">
     {{#  if(d.ReturnDate === '-'){ }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="return">还书</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="continue">续借</a>
     {{#  } }}
 </script>
 
@@ -96,8 +97,6 @@
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'return') {
-                layer.confirm('确定还书？', function (index) {
-                    //向服务端发送删除指令
                     $.ajax({
                         type: 'get',
                         url: '<%=request.getContextPath()%>/ReaderServlet?action=returnBook',
@@ -117,6 +116,25 @@
                             layer.msg('网络错误', {icon: 2}, {time: 2000});
                         }
                     });
+            }else if(layEvent === 'continue') {
+                $.ajax({
+                    type: 'get',
+                    url: '<%=request.getContextPath()%>/ReaderServlet?action=continueBorrow',
+                    data: {
+                        isbn: data.ISBN//传向后端的数据
+                    },
+                    contentType: 'application/json',
+                    success: function (result) {
+                        if (result.status === "ok") {
+                            layer.msg(result.content, {icon: 6});
+                        } else {
+                            layer.msg(result.content, {icon: 5});
+                        }
+                        flushTab();
+                    },
+                    error: function (result) {
+                        layer.msg('网络错误', {icon: 2}, {time: 2000});
+                    }
                 });
             }
         });
