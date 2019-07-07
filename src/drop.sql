@@ -1,0 +1,12 @@
+drop table STAFF_DEALWITH_READER_BORROW_HISTORY;
+drop table STAFF_DEALWITH_BOOK_HISTORY;
+drop table STAFF_DEALWITH_READER_RETURN_HISTORY;
+drop table STAFF;
+drop table READER_MESSAGE;
+drop table READER_BORROW_RETURN_HISTORY;
+drop table BOOK;
+drop table BOOK_REQUEST;
+drop table Reader_Details;
+drop table Reader_Account;
+drop table Admin;
+drop table Book_Types;

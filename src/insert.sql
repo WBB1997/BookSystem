@@ -1,0 +1,137 @@
+-- 插入院系
+INSERT INTO College_Types VALUES('机械工程学院');
+INSERT INTO College_Types VALUES('电气与信息工程学院');
+INSERT INTO College_Types VALUES('材料科学与工程学院');
+INSERT INTO College_Types VALUES('汽车工程学院');
+INSERT INTO College_Types VALUES('经济管理学院');
+INSERT INTO College_Types VALUES('马克思主义学院');
+INSERT INTO College_Types VALUES('外国语学院');
+INSERT INTO College_Types VALUES('理学院');
+INSERT INTO College_Types VALUES('继续教育学院');
+INSERT INTO College_Types VALUES('体育课部');
+INSERT INTO College_Types VALUES('汽车工程师学院');
+INSERT INTO College_Types VALUES('科技学院');
+-- 插入读者类型
+INSERT INTO Reader_Types VALUES('学生');
+INSERT INTO Reader_Types VALUES('老师');
+INSERT INTO Reader_Types VALUES('校外人员');
+-- 插入图书类型
+INSERT INTO Book_Types VALUES('计算机类');
+INSERT INTO Book_Types VALUES('教育类');
+INSERT INTO Book_Types VALUES('科幻类');
+INSERT INTO Book_Types VALUES('考研类');
+
+-- 插入读者
+INSERT INTO Reader_Account(No, Password) VALUES('690252189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690252189','吴贝贝','男', '学生', '电气与信息工程学院');
+-- 插入管理员
+INSERT INTO Admin(No, Password, Name, Gender, Phone) VALUES('690252189', 'a690252189','吴贝贝','男', '18372637615');
+INSERT INTO Admin(No, Password, Name, Gender, Phone) VALUES('690212189', 'a690252189','吴贝贝','男', '18372637615');
+INSERT INTO Admin(No, Password, Name, Gender, Phone) VALUES('690222189', 'a690252189','吴贝贝','男', '18372637615');
+INSERT INTO Admin(No, Password, Name, Gender, Phone) VALUES('690232189', 'a690252189','吴贝贝','男', '18372637615');
+INSERT INTO Admin(No, Password, Name, Gender, Phone) VALUES('690242189', 'a690252189','吴贝贝','男', '18372637615');
+INSERT INTO Admin(No, Password, Name, Gender, Phone) VALUES('690262189', 'a690252189','吴贝贝','男', '18372637615');
+INSERT INTO Admin(No, Password, Name, Gender, Phone) VALUES('690272189', 'a690252189','吴贝贝','男', '18372637615');
+-- 插入图书
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406641','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406611','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406621','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406631','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406651','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406661','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406671','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406681','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('9787040406691','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('97870404066101','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('97870404066111','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('97870404066121','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+INSERT INTO Book(ISBN, Name, Author, PUBLISHER, PUBLISHDATE) VALUES('97870404066123','数据库系统概论(第五版)','王珊 萨师煊','高等教育出版社', sysdate);
+
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, 5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, -5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, -5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, -5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, -5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, -5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, -5);
+INSERT INTO ADMIN_BOOK VALUES('690252189', '9787040406611', SYSDATE, -5);
+
+INSERT INTO Reader_Account(No, Password) VALUES('690212189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690212189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690222189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690222189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690232189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690232189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690242189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690242189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690262189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690262189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690272189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690272189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690282189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690282189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690292189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690292189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690102189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690102189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+
+INSERT INTO Reader_Account(No, Password) VALUES('690112189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690112189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690122189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690122189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690132189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690132189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO Reader_Account(No, Password) VALUES('690142189','a690252189');
+INSERT INTO Reader_Details(No, Name, GENDER, Type, College) VALUES('690142189','吴贝贝','男', '学生', '电气与信息工程学院');
+
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
+INSERT INTO READER_BOOK VALUES('690252189','9787040406611' ,sysdate,sysdate,sysdate);
